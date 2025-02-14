@@ -1,6 +1,6 @@
 <?php
 session_start();
-if (!isset($_SESSION['usuario_id']) || $_SESSION['rol'] !== 'Administrador') {
+if (!isset($_SESSION['usuario_id'])) {
     header('Location: login.php');
     exit();
 }
@@ -10,12 +10,26 @@ if (!isset($_SESSION['usuario_id']) || $_SESSION['rol'] !== 'Administrador') {
 
 <!DOCTYPE html>
 <html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <title>Planificación de Horarios</title>
-</head>
+<?php include 'head.php'; ?>
 <body>
-    <h1>Planificación de Horarios</h1>
-    <!-- Formulario para crear horarios semanales -->
+    <?php include 'navbar.php'; ?>
+
+    <div class="container mt-4">
+        <h2><i class="fas fa-clock"></i> Gestión de Horarios</h2>
+        <div class="card mt-3">
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-6">
+                        <h4>Horario Semanal</h4>
+                        <!-- Aquí irá el calendario o tabla de horarios -->
+                    </div>
+                    <div class="col-md-6">
+                        <h4>Acciones</h4>
+                        <!-- Botones y controles para gestionar horarios -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 </body>
 </html> 

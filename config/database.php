@@ -2,7 +2,7 @@
 $host = 'localhost';
 $dbname = 'molimepi';
 $username = 'root'; // Cambia esto si tienes un usuario diferente
-$password = ''; // Cambia esto si tienes una contraseña
+$password = ''; // Cambia esto si tienes una password
 
 try {
     $pdo = new PDO("mysql:host=$host;dbname=$dbname", $username, $password);

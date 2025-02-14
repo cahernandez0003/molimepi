@@ -10,13 +10,15 @@ if (!isset($_SESSION['usuario_id'])) {
 
 <!DOCTYPE html>
 <html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <title>Dashboard</title>
-</head>
+<?php include 'head.php'; ?>
 <body>
-    <h1>Bienvenido al Dashboard</h1>
-    <p>Usuario: <?php echo $_SESSION['usuario_id']; ?></p>
-    <a href="logout.php">Cerrar sesión</a>
+    <?php include 'navbar.php'; ?>
+
+    <div class="container mt-4">
+        <div class="jumbotron">
+            <h1 class="display-4">Bienvenido al Sistema</h1>
+            <p class="lead">Panel de control para la gestión de empleados</p>
+        </div>
+    </div>
 </body>
 </html>

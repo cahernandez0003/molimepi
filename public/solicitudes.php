@@ -10,12 +10,33 @@ if (!isset($_SESSION['usuario_id'])) {
 
 <!DOCTYPE html>
 <html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <title>Gestión de Solicitudes</title>
-</head>
+<?php include 'head.php'; ?>
 <body>
-    <h1>Gestión de Solicitudes</h1>
-    <!-- Formulario para enviar solicitudes -->
+    <?php include 'navbar.php'; ?>
+
+    <div class="container mt-4">
+        <h2><i class="fas fa-envelope"></i> Gestión de Solicitudes</h2>
+        <div class="card mt-3">
+            <div class="card-body">
+                <button class="btn btn-primary mb-3" data-toggle="modal" data-target="#nuevaSolicitudModal">
+                    <i class="fas fa-plus"></i> Nueva Solicitud
+                </button>
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Tipo</th>
+                            <th>Fecha</th>
+                            <th>Estado</th>
+                            <th>Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- Aquí irán las solicitudes -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
 </body>
 </html> 
