@@ -29,7 +29,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         <div class="card p-4 shadow-lg" style="width: 22rem;">
             <div class="card-body">
                 <div class="text-center mb-4">
-                    <img src="molimepi.png" alt="MOLIMEPI" class="img-fluid" style="max-width: 100px;">
+                    <img src="imgs/molimepi.png" alt="MOLIMEPI" class="img-fluid" style="max-width: 100px;">
                     <h3 style="font-size: 2rem; color: #007bff;">MOLIMEPI</h3>
                     <h4 style="font-size: 1.2rem; color: #007bff;">Sistema de Gestión de Empleados</h4>
                 </div>
