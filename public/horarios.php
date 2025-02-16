@@ -75,8 +75,8 @@ try {
                     <div class="modal-body">
                         <input type="hidden" id="fechaSeleccionada" name="fecha" required>
                         <div class="form-group">
-                            <label for="empleado">Empleado:</label>
-                            <select name="usuario_id" class="form-control" required>
+                            <label for="usuario_id">Empleado:</label>
+                            <select id="usuario_id" name="usuario_id" class="form-control" required>
                                 <option value="">Seleccione un empleado</option>
                                 <?php foreach ($empleados as $empleado): ?>
                                     <option value="<?php echo htmlspecialchars($empleado['ID']); ?>">
@@ -87,11 +87,11 @@ try {
                         </div>
                         <div class="form-group">
                             <label for="hora_entrada">Hora de Entrada:</label>
-                            <input type="time" name="hora_entrada" class="form-control" required>
+                            <input type="time" id="hora_entrada" name="hora_entrada" class="form-control" required>
                         </div>
                         <div class="form-group">
                             <label for="hora_salida">Hora de Salida:</label>
-                            <input type="time" name="hora_salida" class="form-control" required>
+                            <input type="time" id="hora_salida" name="hora_salida" class="form-control" required>
                         </div>
                     </div>
                     <div class="modal-footer">
