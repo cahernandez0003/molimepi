@@ -91,7 +91,7 @@ $usuarios = $stmt->fetchAll(PDO::FETCH_ASSOC);
                             <td class="d-none d-md-table-cell"><?php echo htmlspecialchars($usuario['telefono']); ?></td>
                             <td class="d-none d-md-table-cell"><?php echo htmlspecialchars($usuario['correo']); ?></td>
                             <td>
-                                <img src="<?php echo str_replace('public/', '', htmlspecialchars($usuario['imagen'])); ?>" alt="Imagen de usuario" style="width: 50px; height: 50px;">
+                                <img src="<?php echo str_replace('public/', '', htmlspecialchars($usuario['imagen'])); ?>" alt="Imagen de usuario" style="width: 50px; height: 50px;" data-toggle="modal" data-target="#imageModal" data-img-src="<?php echo str_replace('public/', '', htmlspecialchars($usuario['imagen'])); ?>" class="clickable-image">
                             </td>
                             <td>
                                 <div style="display: flex; align-items: center;">
@@ -184,7 +184,24 @@ $usuarios = $stmt->fetchAll(PDO::FETCH_ASSOC);
         </div>
     </div>
 </div>
-</body>
+
+<!-- Modal para mostrar imagen ampliada -->
+<div class="modal fade" id="imageModal" tabindex="-1" role="dialog" aria-labelledby="imageModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="imageModalLabel">Imagen del Usuario</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <img id="modalImage" src="" alt="Imagen ampliada" style="width: 100%; height: auto;">
+            </div>
+        </div>
+    </div>
+</div>
+
 <script>
     $('#confirmDeleteModal').on('show.bs.modal', function (event) {
         var button = $(event.relatedTarget); // Botón que activó el modal
@@ -195,5 +212,13 @@ $usuarios = $stmt->fetchAll(PDO::FETCH_ASSOC);
         var modal = $(this);
         modal.find('#confirmDeleteButton').attr('href', deleteUrl);
     });
-</script> 
+
+    $(document).ready(function() {
+        $('.clickable-image').on('click', function() {
+            var imgSrc = $(this).data('img-src');
+            $('#modalImage').attr('src', imgSrc);
+        });
+    });
+</script>
+</body>
 </html> 

@@ -120,7 +120,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                     <td>
                         <input type="file" class="form-control" name="imagen" accept="image/*">
                         <input type="hidden" name="imagen_actual" value="<?php echo htmlspecialchars($urow['imagen']); ?>">
-                        <img src="../<?php echo htmlspecialchars($urow['imagen']); ?>" alt="Imagen de usuario" style="width: 100px; height: 100px;">
+                        <img src="../<?php echo htmlspecialchars($urow['imagen']); ?>" alt="Imagen de usuario" style="width: 100px; height: 100px;" data-toggle="modal" data-target="#imageModal" data-img-src="../<?php echo htmlspecialchars($urow['imagen']); ?>" class="clickable-image">
                     </td>
                 </tr>
                 <tr>
@@ -139,6 +139,23 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
         </form>
         <?php endforeach; ?>
+    </div>
+
+    <!-- Modal para mostrar imagen ampliada -->
+    <div class="modal fade" id="imageModal" tabindex="-1" role="dialog" aria-labelledby="imageModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="imageModalLabel">Imagen del Usuario</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <img id="modalImage" src="" alt="Imagen ampliada" style="width: 100%; height: auto;">
+                </div>
+            </div>
+        </div>
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
@@ -178,6 +195,13 @@ function confirmarCancelacion() {
         }
     });
 }
+
+$(document).ready(function() {
+    $('.clickable-image').on('click', function() {
+        var imgSrc = $(this).data('img-src');
+        $('#modalImage').attr('src', imgSrc);
+    });
+});
 </script>
 
 </body>

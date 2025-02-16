@@ -101,7 +101,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                     </div>
                     <div class="form-group">
                         <label><strong>Imagen de Perfil:</strong></label><br>
-                        <img src="<?php echo (!empty($empleado['imagen']) && file_exists("../" . $empleado['imagen'])) ? "../" . $empleado['imagen'] : '../public/imgs/nofoto.png'; ?>" class="rounded-circle" style="width: 100px; height: 100px;">
+                        <img src="<?php echo (!empty($empleado['imagen']) && file_exists("../" . $empleado['imagen'])) ? "../" . $empleado['imagen'] : '../public/imgs/nofoto.png'; ?>" class="rounded-circle clickable-image" style="width: 100px; height: 100px;" data-toggle="modal" data-target="#imageModal" data-img-src="<?php echo (!empty($empleado['imagen']) && file_exists("../" . $empleado['imagen'])) ? "../" . $empleado['imagen'] : '../public/imgs/nofoto.png'; ?>">
                         <input type="file" name="imagen" class="form-control mt-2" disabled>
                     </div>
                     <div class="form-group">
@@ -144,6 +144,32 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             }
         });
     }
+    </script>
+
+    <!-- Modal para mostrar imagen ampliada -->
+    <div class="modal fade" id="imageModal" tabindex="-1" role="dialog" aria-labelledby="imageModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="imageModalLabel">Imagen de Perfil</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <img id="modalImage" src="" alt="Imagen ampliada" style="width: 100%; height: auto;">
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        $(document).ready(function() {
+            $('.clickable-image').on('click', function() {
+                var imgSrc = $(this).data('img-src');
+                $('#modalImage').attr('src', imgSrc);
+            });
+        });
     </script>
 </body>
 </html>
