@@ -66,7 +66,7 @@ $usuarios = $stmt->fetchAll(PDO::FETCH_ASSOC);
                             <table class="table table-striped table-responsive">
                                 <thead>
                                     <tr>
-                                        <th>ID</th>
+                                        
                                         <th>Nombre</th>
                                         <th>Identificación</th>
                                         <th>Cargo</th>
@@ -80,7 +80,7 @@ $usuarios = $stmt->fetchAll(PDO::FETCH_ASSOC);
                                 <tbody>
                                     <?php foreach ($usuarios as $usuario): ?>
                                     <tr>
-                                        <td><?php echo $usuario['ID']; ?></td>
+                                        
                                         <td><?php echo $usuario['nombre']; ?></td>
                                         <td><?php echo $usuario['identificacion']; ?></td>
                                         <td><?php echo $usuario['cargo']; ?></td>

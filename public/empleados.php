@@ -7,6 +7,11 @@ if (!isset($_SESSION['usuario_id']) || $_SESSION['rol'] !== 'Administrador') {
 
 require_once '../config/database.php';
 
+// Mostrar errores para depuración
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
+
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $nombre = $_POST['nombre'];
     $identificacion = $_POST['identificacion'];
@@ -14,23 +19,33 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $telefono = $_POST['telefono'];
     $correo = $_POST['correo'];
     $rol = $_POST['rol'];
-    $password = md5('defaultpassword'); // password por defecto
+
+    // Generar el nickname basado en la identificación
+    $nickname = $identificacion;
+
+    // Hashear la contraseña por defecto
+    $password = password_hash('123456', PASSWORD_BCRYPT);
+
     // Manejar la subida de imagen
     if (isset($_FILES['imagen']) && $_FILES['imagen']['error'] == 0) {
         $imagen = 'imgs/' . basename($_FILES['imagen']['name']);
-        move_uploaded_file($_FILES['imagen']['tmp_name'], $imagen);
+        if (!move_uploaded_file($_FILES['imagen']['tmp_name'], $imagen)) {
+            echo "Error al subir la imagen.";
+        }
     } else {
         $imagen = 'imgs/nofoto.png'; // Ruta de la imagen predeterminada
     }
 
     // Insertar en la tabla usuarios
-    $stmt = $pdo->prepare("INSERT INTO usuarios (nombre, identificacion, cargo, telefono, correo, password, rol, imagen) VALUES (:nombre, :identificacion, :cargo, :telefono, :correo, :password, :rol, :imagen)");
+    $stmt = $pdo->prepare("INSERT INTO usuarios (nombre, identificacion, cargo, telefono, correo, nickname, password, rol, imagen, cambio_password) 
+                           VALUES (:nombre, :identificacion, :cargo, :telefono, :correo, :nickname, :password, :rol, :imagen, 0)");
     $stmt->execute([
         'nombre' => $nombre,
         'identificacion' => $identificacion,
         'cargo' => $cargo,
         'telefono' => $telefono,
         'correo' => $correo,
+        'nickname' => $nickname,
         'password' => $password,
         'rol' => $rol,
         'imagen' => $imagen
@@ -50,7 +65,7 @@ $usuarios = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
     <div class="container mt-4">
         <h2><i class="fas fa-users"></i> Gestión de Empleados</h2>
-        <div class="card mt-3">
+        <div class="card mt-3" style="border: none; box-shadow: none;">
             <div class="card-body">
                 <button class="btn btn-primary mb-3" data-toggle="modal" data-target="#nuevoUsuarioModal">
                     <i class="fas fa-plus"></i> Nuevo Empleado
@@ -58,13 +73,11 @@ $usuarios = $stmt->fetchAll(PDO::FETCH_ASSOC);
                 <table class="table table-striped">
                     <thead>
                         <tr>
-                            <th>ID</th>
                             <th>Nombre</th>
-                            <th>Identificación</th>
-                            <th>Cargo</th>
-                            <th>Teléfono</th>
-                            <th>Correo</th>
-                            <th>Rol</th>
+                            <th class="d-none d-md-table-cell">Identificación</th>
+                            <th class="d-none d-md-table-cell">Cargo</th>
+                            <th class="d-none d-md-table-cell">Teléfono</th>
+                            <th class="d-none d-md-table-cell">Correo</th>
                             <th>Imagen</th>
                             <th>Acciones</th>
                         </tr>
@@ -72,17 +85,23 @@ $usuarios = $stmt->fetchAll(PDO::FETCH_ASSOC);
                     <tbody>
                         <?php foreach ($usuarios as $usuario): ?>
                         <tr>
-                            <td><?php echo $usuario['ID']; ?></td>
-                            <td><?php echo $usuario['nombre']; ?></td>
-                            <td><?php echo $usuario['identificacion']; ?></td>
-                            <td><?php echo $usuario['cargo']; ?></td>
-                            <td><?php echo $usuario['telefono']; ?></td>
-                            <td><?php echo $usuario['correo']; ?></td>
-                            <td><?php echo $usuario['rol']; ?></td>
-                            <td><img src="<?php echo $usuario['imagen']; ?>" alt="Imagen de usuario" style="width: 50px; height: 50px;"></td>
+                            <td style="text-transform: uppercase;"><?php echo htmlspecialchars($usuario['nombre']); ?></td>
+                            <td class="d-none d-md-table-cell" style="text-transform: uppercase;"><?php echo htmlspecialchars($usuario['identificacion']); ?></td>
+                            <td class="d-none d-md-table-cell" style="text-transform: uppercase;"><?php echo htmlspecialchars($usuario['cargo']); ?></td>
+                            <td class="d-none d-md-table-cell"><?php echo htmlspecialchars($usuario['telefono']); ?></td>
+                            <td class="d-none d-md-table-cell"><?php echo htmlspecialchars($usuario['correo']); ?></td>
                             <td>
-                                <a href="editar_usuario.php?id=<?php echo $usuario['ID']; ?>" class="btn btn-secondary">Editar</a>
-                                <button class="btn btn-danger" data-toggle="modal" data-target="#confirmDeleteModal" data-id="<?php echo $usuario['ID']; ?>">Eliminar</button>
+                                <img src="<?php echo str_replace('public/', '', htmlspecialchars($usuario['imagen'])); ?>" alt="Imagen de usuario" style="width: 50px; height: 50px;">
+                            </td>
+                            <td>
+                                <div style="display: flex; align-items: center;">
+                                    <a href="editar_usuario.php?id=<?php echo $usuario['ID']; ?>" class="btn btn-secondary" style="margin-right: 10px;">
+                                        <i class="fas fa-edit"></i>
+                                    </a>
+                                    <button class="btn btn-danger" data-toggle="modal" data-target="#confirmDeleteModal" data-id="<?php echo $usuario['ID']; ?>">
+                                        <i class="fas fa-trash-alt"></i>
+                                    </button>
+                                </div>
                             </td>
                         </tr>
                         <?php endforeach; ?>
@@ -145,26 +164,6 @@ $usuarios = $stmt->fetchAll(PDO::FETCH_ASSOC);
         </div>
     </div>
 
-    <!-- Modal de Confirmación -->
-    <div class="modal fade" id="confirmDeleteModal" tabindex="-1" role="dialog" aria-labelledby="confirmDeleteModalLabel" aria-hidden="true">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="confirmDeleteModalLabel">Confirmar Eliminación</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body">
-                    ¿Estás seguro de que deseas eliminar este usuario?
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
-                    <a id="confirmDeleteButton" class="btn btn-danger">Eliminar</a>
-                </div>
-            </div>
-        </div>
-    </div>
 <!-- Modal de Confirmación -->
 <div class="modal fade" id="confirmDeleteModal" tabindex="-1" role="dialog" aria-labelledby="confirmDeleteModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">

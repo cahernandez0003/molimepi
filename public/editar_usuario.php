@@ -7,8 +7,26 @@ if (!isset($_SESSION['usuario_id']) || $_SESSION['rol'] !== 'Administrador') {
 
 require_once '../config/database.php';
 
+function mostrarUsuario($pdo, $id) {
+    try {
+        $sql = "SELECT * FROM usuarios WHERE ID = :id";
+        $stmt = $pdo->prepare($sql);
+        $stmt->bindParam(':id', $id, PDO::PARAM_INT);
+        $stmt->execute();
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    } catch (Exception $e) {
+        echo $e->getMessage();
+    }
+}
+
+if (!isset($_GET['id']) || empty($_GET['id'])) {
+    die("Error: ID de usuario no proporcionado.");
+}
+
+$id = $_GET['id'];
+$musu = mostrarUsuario($pdo, $id);
+
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-    $id = $_POST['id'];
     $nombre = $_POST['nombre'];
     $identificacion = $_POST['identificacion'];
     $cargo = $_POST['cargo'];
@@ -16,34 +34,45 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $correo = $_POST['correo'];
     $rol = $_POST['rol'];
 
-    // Manejar la subida de imagen
-    if (isset($_FILES['imagen']) && $_FILES['imagen']['error'] == 0) {
-        $imagen = 'imgs/' . basename($_FILES['imagen']['name']);
-        move_uploaded_file($_FILES['imagen']['tmp_name'], $imagen);
+    if (!empty($_FILES['imagen']['name'])) {
+        $imagenNombre = "public/imgs/" . basename($_FILES['imagen']['name']);
+        move_uploaded_file($_FILES['imagen']['tmp_name'], "../" . $imagenNombre);
     } else {
-        $imagen = $_POST['imagen_actual'] ?: 'imgs/nofoto.png'; // Mantener la imagen actual o usar la predeterminada
+        $imagenNombre = $_POST['imagen_actual'];
     }
 
-    $stmt = $pdo->prepare("UPDATE usuarios SET nombre = :nombre, identificacion = :identificacion, cargo = :cargo, telefono = :telefono, correo = :correo, rol = :rol, imagen = :imagen WHERE ID = :id");
-    $stmt->execute([
-        'nombre' => $nombre,
-        'identificacion' => $identificacion,
-        'cargo' => $cargo,
-        'telefono' => $telefono,
-        'correo' => $correo,
-        'rol' => $rol,
-        'imagen' => $imagen,
-        'id' => $id
-    ]);
-
-    header('Location: usuarios.php'); // Redirigir a la lista de usuarios
+    if (!empty($_POST['password'])) {
+        $password = password_hash($_POST['password'], PASSWORD_BCRYPT);
+        $sql = "UPDATE usuarios SET nombre = :nombre, identificacion = :identificacion, cargo = :cargo, telefono = :telefono, correo = :correo, rol = :rol, imagen = :imagen, password = :password WHERE ID = :id";
+        $stmt = $pdo->prepare($sql);
+        $stmt->execute([
+            'nombre' => $nombre,
+            'identificacion' => $identificacion,
+            'cargo' => $cargo,
+            'telefono' => $telefono,
+            'correo' => $correo,
+            'rol' => $rol,
+            'imagen' => $imagenNombre,
+            'password' => $password,
+            'id' => $id
+        ]);
+    } else {
+        $sql = "UPDATE usuarios SET nombre = :nombre, identificacion = :identificacion, cargo = :cargo, telefono = :telefono, correo = :correo, rol = :rol, imagen = :imagen WHERE ID = :id";
+        $stmt = $pdo->prepare($sql);
+        $stmt->execute([
+            'nombre' => $nombre,
+            'identificacion' => $identificacion,
+            'cargo' => $cargo,
+            'telefono' => $telefono,
+            'correo' => $correo,
+            'rol' => $rol,
+            'imagen' => $imagenNombre,
+            'id' => $id
+        ]);
+    }
+    header('Location: empleados.php');
     exit();
 }
-
-$id = $_GET['id'];
-$stmt = $pdo->prepare("SELECT * FROM usuarios WHERE ID = :id");
-$stmt->execute(['id' => $id]);
-$usuario = $stmt->fetch(PDO::FETCH_ASSOC);
 ?>
 
 <!DOCTYPE html>
@@ -54,42 +83,102 @@ $usuario = $stmt->fetch(PDO::FETCH_ASSOC);
 
     <div class="container mt-4">
         <h2><i class="fas fa-user-edit"></i> Editar Usuario</h2>
-        <form method="post" enctype="multipart/form-data">
-            <input type="hidden" name="id" value="<?php echo $usuario['ID']; ?>">
+        <?php foreach ($musu as $urow): ?>
+        <form method="post" enctype="multipart/form-data" onsubmit="return confirmarGuardado();">
+            <table class="table table-striped table-hover text-justify">
+                <tr>
+                    <th> Nombres y Apellidos: </th>
+                    <td><input type="text" name="nombre" class="form-control" value="<?php echo htmlspecialchars($urow['nombre']); ?>" required></td>
+                </tr>
+                <tr>
+                    <th> Identificación: </th>
+                    <td><input type="text" name="identificacion" class="form-control" value="<?php echo htmlspecialchars($urow['identificacion']); ?>" required></td>
+                </tr>
+                <tr>
+                    <th> Correo Electrónico: </th>
+                    <td><input type="email" name="correo" class="form-control" value="<?php echo htmlspecialchars($urow['correo']); ?>" required></td>
+                </tr>
+                <tr>
+                    <th> Teléfono: </th>
+                    <td><input type="text" name="telefono" class="form-control" value="<?php echo htmlspecialchars($urow['telefono']); ?>" required></td>
+                </tr>
+                <tr>
+                    <th> Cargo: </th>
+                    <td><input type="text" name="cargo" class="form-control" value="<?php echo htmlspecialchars($urow['cargo']); ?>" required></td>
+                </tr>
+                <tr>
+                    <th> Rol: </th>
+                    <td>
+                        <select name="rol" class="form-control">
+                            <option value="Empleado" <?php echo ($urow['rol'] === 'Empleado') ? 'selected' : ''; ?>>Empleado</option>
+                            <option value="Administrador" <?php echo ($urow['rol'] === 'Administrador') ? 'selected' : ''; ?>>Administrador</option>
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <th> Imagen: </th>
+                    <td>
+                        <input type="file" class="form-control" name="imagen" accept="image/*">
+                        <input type="hidden" name="imagen_actual" value="<?php echo htmlspecialchars($urow['imagen']); ?>">
+                        <img src="../<?php echo htmlspecialchars($urow['imagen']); ?>" alt="Imagen de usuario" style="width: 100px; height: 100px;">
+                    </td>
+                </tr>
+                <tr>
+                    <th> Nueva Contraseña (Opcional): </th>
+                    <td><input type="password" name="password" class="form-control"></td>
+                </tr>
+            </table>
             <div class="form-group">
-                <label for="nombre">Nombre:</label>
-                <input type="text" id="nombre" name="nombre" class="form-control" value="<?php echo $usuario['nombre']; ?>" required>
+                <button type="submit" class="btn btn-outline-success" onclick="confirmarGuardado(event);">
+                    <i class="fa fa-save"></i> Modificar
+                </button>
+                <button type="button" class="btn btn-outline-danger" onclick="confirmarCancelacion();">
+                    <i class="fa fa-times"></i> Cancelar
+                </button>
             </div>
-            <div class="form-group">
-                <label for="identificacion">Identificación:</label>
-                <input type="text" id="identificacion" name="identificacion" class="form-control" value="<?php echo $usuario['identificacion']; ?>" required>
-            </div>
-            <div class="form-group">
-                <label for="cargo">Cargo:</label>
-                <input type="text" id="cargo" name="cargo" class="form-control" value="<?php echo $usuario['cargo']; ?>" required>
-            </div>
-            <div class="form-group">
-                <label for="telefono">Teléfono:</label>
-                <input type="text" id="telefono" name="telefono" class="form-control" value="<?php echo $usuario['telefono']; ?>" required>
-            </div>
-            <div class="form-group">
-                <label for="correo">Correo:</label>
-                <input type="email" id="correo" name="correo" class="form-control" value="<?php echo $usuario['correo']; ?>" required>
-            </div>
-            <div class="form-group">
-                <label for="rol">Rol:</label>
-                <select id="rol" name="rol" class="form-control" required>
-                    <option value="Empleado" <?php echo $usuario['rol'] == 'Empleado' ? 'selected' : ''; ?>>Empleado</option>
-                    <option value="Administrador" <?php echo $usuario['rol'] == 'Administrador' ? 'selected' : ''; ?>>Administrador</option>
-                </select>
-            </div>
-            <div class="form-group">
-                <label for="imagen">Imagen:</label>
-                <input type="file" id="imagen" name="imagen" class="form-control">
-                <input type="hidden" name="imagen_actual" value="<?php echo $usuario['imagen']; ?>">
-            </div>
-            <button type="submit" class="btn btn-primary">Guardar Cambios</button>
+
         </form>
+        <?php endforeach; ?>
     </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+<script>
+function confirmarGuardado(event) {
+    event.preventDefault();
+    Swal.fire({
+        title: '¿Estás seguro?',
+        text: "Se guardarán los cambios en el usuario.",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#28a745',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Sí, guardar',
+        cancelButtonText: 'Cancelar'
+    }).then((result) => {
+        if (result.isConfirmed) {
+            document.querySelector("form").submit();
+        }
+    });
+}
+
+function confirmarCancelacion() {
+    Swal.fire({
+        title: '¿Cancelar edición?',
+        text: "Los cambios no guardados se perderán.",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#d33',
+        cancelButtonColor: '#3085d6',
+        confirmButtonText: 'Sí, cancelar',
+        cancelButtonText: 'Volver'
+    }).then((result) => {
+        if (result.isConfirmed) {
+            window.location.href = 'empleados.php';
+        }
+    });
+}
+</script>
+
 </body>
-</html> 
+</html>
