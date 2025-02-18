@@ -1,3 +1,36 @@
 .background {
     background-image: url('public/imgs/fondo.jpg');
 } 
+.tooltip-evento {
+    position: absolute;
+    background-color: rgba(0, 0, 0, 0.8);
+    color: #fff;
+    padding: 8px;
+    border-radius: 5px;
+    font-size: 12px;
+    display: none;
+    z-index: 1000;
+    pointer-events: none;
+}
+
+.fc-daygrid-day:hover {
+    background-color: #f8f9fa !important;
+    transform: scale(1.05);
+    transition: all 0.2s ease-in-out;
+}
+.evento-tarjeta {
+    background: #f8f9fa;
+    border-left: 5px solid #007bff;
+    padding: 10px;
+    margin-bottom: 10px;
+    border-radius: 5px;
+    box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1);
+}
+.evento-tarjeta {
+    background: #f8f9fa;
+    border-left: 5px solid #007bff;
+    padding: 10px;
+    margin-bottom: 10px;
+    border-radius: 5px;
+    box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1);
+}
