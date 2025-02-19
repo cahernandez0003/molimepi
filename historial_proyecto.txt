@@ -1,0 +1,109 @@
+==========================================================================
+HISTORIAL DEL PROYECTO MOLIMEPI
+==========================================================================
+
+ÚLTIMA ACTUALIZACIÓN: 17/03/2024
+AUTOR: Asistente IA
+==========================================================================
+
+ESTRUCTURA DE LA BASE DE DATOS
+------------------------------------------
+Tabla: horarios_trabajo
+- id (int11) AUTO_INCREMENT
+- usuario_id (int11)
+- fecha (date)
+- hora_entrada (time NULL)
+- hora_salida (time NULL)
+- creado_en (timestamp)
+- tipo enum('normal', 'descanso', 'baja', 'otros')
+- horas_dia (int11)
+
+CAMBIOS Y MEJORAS IMPLEMENTADAS
+------------------------------------------
+
+[17/03/2024] Gestión de Tipos de Horarios
+- Implementación de diferentes tipos de registro (normal, descanso, baja, otros)
+- Modificación de la tabla para permitir valores NULL en hora_entrada y hora_salida
+- Cálculo automático de horas trabajadas para tipo 'normal'
+- Visualización diferenciada por colores en el calendario:
+  * Normal: Azul (#007bff)
+  * Descanso: Gris (#6c757d)
+  * Baja: Blanco con texto rojo (#ffffff / #dc3545)
+  * Otros: Gris (#6c757d)
+- Iconos específicos para cada tipo:
+  * Normal: Sin icono
+  * Descanso: 🏠
+  * Baja: 🏥
+  * Otros: ⚠️
+
+[17/03/2024] Mejoras en el Formulario de Horarios
+- Validación dinámica según el tipo de registro
+- Campos de hora opcionales para tipos diferentes a 'normal'
+- Prevención de superposición de horarios
+- Mejora en la interfaz de usuario del modal de edición
+
+[17/03/2024] Funcionalidad de Copia de Horarios
+- Implementación de copia de horarios entre meses
+- Validación de fechas válidas
+- Mantenimiento de tipos y horas en la copia
+- Interfaz intuitiva para selección de mes origen y destino
+
+VALIDACIONES IMPLEMENTADAS
+------------------------------------------
+1. Superposición de Horarios
+   - Verificación de horarios existentes para la misma fecha y usuario
+   - Control específico para horarios tipo 'normal'
+
+2. Tipos de Registro
+   - Validación de tipos permitidos
+   - Manejo específico de campos según tipo
+   - Cálculo automático de horas para tipo 'normal'
+
+3. Formulario
+   - Validación de campos requeridos según tipo
+   - Verificación de rangos de hora válidos
+   - Control de duplicidad de registros
+
+RECOMENDACIONES DE USO
+------------------------------------------
+1. Horarios Normales
+   - Especificar hora de entrada y salida
+   - Verificar que no haya superposición
+   - Las horas se calculan automáticamente
+
+2. Otros Tipos de Registro
+   - No requieren hora de entrada ni salida
+   - Solo se permite un registro por fecha y usuario
+   - Se visualizan con colores e iconos distintivos
+
+3. Copia de Horarios
+   - Verificar mes origen y destino
+   - Comprobar que los días sean válidos
+   - Revisar los horarios copiados
+
+PRÓXIMAS MEJORAS PLANIFICADAS
+------------------------------------------
+1. Visualización
+   - Mejora en la presentación del calendario
+   - Filtros por tipo de registro
+   - Vista consolidada por empleado
+
+2. Funcionalidades
+   - Reportes por tipo de registro
+   - Estadísticas de horas trabajadas
+   - Exportación de datos
+
+3. Optimizaciones
+   - Mejora en el rendimiento de consultas
+   - Caché de datos frecuentes
+   - Validaciones del lado del cliente
+
+==========================================================================
+NOTAS TÉCNICAS
+------------------------------------------
+- Base de datos: MySQL/MariaDB
+- Frontend: HTML5, JavaScript, jQuery, Bootstrap
+- Backend: PHP
+- Componentes: FullCalendar, SweetAlert2
+- Versión PHP mínima requerida: 7.4
+========================================================================== 

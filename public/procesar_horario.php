@@ -14,26 +14,55 @@ if (!isset($_SESSION['usuario_id']) || $_SESSION['rol'] !== 'Administrador') {
 }
 
 // Verificar si los datos están presentes
-if (!isset($_POST['fecha'], $_POST['usuario_id'], $_POST['hora_entrada'], $_POST['hora_salida'])) {
-    echo json_encode(['error' => 'Faltan datos obligatorios']);
+if (!isset($_POST['fecha'], $_POST['usuario_id'], $_POST['tipo'])) {
+    echo json_encode(['error' => 'Faltan datos obligatorios (fecha, usuario o tipo)']);
     exit;
 }
 
 // Capturar y validar datos del formulario
 $fecha = trim($_POST['fecha']);
 $usuario_id = trim($_POST['usuario_id']);
-$hora_entrada = trim($_POST['hora_entrada']);
-$hora_salida = trim($_POST['hora_salida']);
+$tipo = trim($_POST['tipo']);
+
+// Validar el tipo
+if (!in_array($tipo, ['normal', 'descanso', 'baja', 'otros'])) {
+    echo json_encode(['error' => 'Tipo de registro no válido']);
+    exit;
+}
+
+// Para tipo normal, validar horas
+if ($tipo === 'normal') {
+    if (!isset($_POST['hora_entrada'], $_POST['hora_salida'])) {
+        echo json_encode(['error' => 'Para horarios normales, debe especificar hora de entrada y salida']);
+        exit;
+    }
+    $hora_entrada = trim($_POST['hora_entrada']);
+    $hora_salida = trim($_POST['hora_salida']);
+    
+    // Calcular horas_dia
+    $entrada = new DateTime($hora_entrada);
+    $salida = new DateTime($hora_salida);
+    $diferencia = $entrada->diff($salida);
+    $horas_dia = $diferencia->h + ($diferencia->i / 60);
+    $horas_dia = round($horas_dia);
+} else {
+    $hora_entrada = null;
+    $hora_salida = null;
+    $horas_dia = 0;
+}
 
 // Validaciones básicas
-if (empty($fecha) || empty($usuario_id) || empty($hora_entrada) || empty($hora_salida)) {
-    echo json_encode(['error' => 'Todos los campos son obligatorios']);
+if (empty($fecha) || empty($usuario_id)) {
+    echo json_encode(['error' => 'La fecha y el usuario son obligatorios']);
     exit;
 }
 
 try {
-    // Verificar si ya existe un horario para ese empleado en esa fecha
-    $stmt = $pdo->prepare("SELECT id FROM horarios_trabajo WHERE usuario_id = :usuario_id AND fecha = :fecha AND id != :horario_id");
+    // Verificar si hay superposición de horarios para ese empleado en esa fecha
+    $stmt = $pdo->prepare("SELECT id FROM horarios_trabajo 
+                          WHERE usuario_id = :usuario_id 
+                          AND fecha = :fecha 
+                          AND id != :horario_id");
     $stmt->execute([
         'usuario_id' => $usuario_id,
         'fecha' => $fecha,
@@ -41,7 +70,7 @@ try {
     ]);
     
     if ($stmt->rowCount() > 0) {
-        echo json_encode(['error' => 'Ya existe un horario para este empleado en esta fecha']);
+        echo json_encode(['error' => 'Ya existe un registro para este empleado en esta fecha']);
         exit;
     }
 
@@ -52,24 +81,31 @@ try {
                               usuario_id = :usuario_id,
                               fecha = :fecha,
                               hora_entrada = :hora_entrada,
-                              hora_salida = :hora_salida
+                              hora_salida = :hora_salida,
+                              tipo = :tipo,
+                              horas_dia = :horas_dia
                               WHERE id = :id");
         $params = [
             'usuario_id' => $usuario_id,
             'fecha' => $fecha,
             'hora_entrada' => $hora_entrada,
             'hora_salida' => $hora_salida,
+            'tipo' => $tipo,
+            'horas_dia' => $horas_dia,
             'id' => $_POST['horario_id']
         ];
     } else {
         // Insertar nuevo horario
-        $stmt = $pdo->prepare("INSERT INTO horarios_trabajo (usuario_id, fecha, hora_entrada, hora_salida) 
-                              VALUES (:usuario_id, :fecha, :hora_entrada, :hora_salida)");
+        $stmt = $pdo->prepare("INSERT INTO horarios_trabajo 
+                              (usuario_id, fecha, hora_entrada, hora_salida, tipo, horas_dia) 
+                              VALUES (:usuario_id, :fecha, :hora_entrada, :hora_salida, :tipo, :horas_dia)");
         $params = [
             'usuario_id' => $usuario_id,
             'fecha' => $fecha,
             'hora_entrada' => $hora_entrada,
-            'hora_salida' => $hora_salida
+            'hora_salida' => $hora_salida,
+            'tipo' => $tipo,
+            'horas_dia' => $horas_dia
         ];
     }
     
