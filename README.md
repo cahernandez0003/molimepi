@@ -1,227 +1,150 @@
-# MOLIMEPI - Sistema de Gestión de Asistencia y Horarios
+# MOLIMEPI - Sistema de Gestión de Empleados
 
 ## Descripción
-MOLIMEPI es un sistema web desarrollado para la gestión de asistencia y horarios de empleados. El sistema permite administrar usuarios, horarios de trabajo, registros de asistencia y generar reportes.
-
-## Estructura del Sistema
-
-### Base de Datos
-#### Tabla: horarios_trabajo
-```sql
-CREATE TABLE `horarios_trabajo` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `usuario_id` int(11) NOT NULL,
-  `fecha` date NOT NULL,
-  `hora_entrada` time NULL,
-  `hora_salida` time NULL,
-  `creado_en` timestamp NOT NULL DEFAULT current_timestamp(),
-  `tipo` enum('normal','descanso','baja','otros') NOT NULL DEFAULT 'normal',
-  `horas_dia` int(11) NOT NULL DEFAULT 0
-);
-```
-
-### Tipos de Registro
-- **Normal**: Registro regular con hora de entrada y salida
-- **Descanso**: Día libre programado
-- **Baja**: Ausencia por enfermedad o similar
-- **Otros**: Otros tipos de ausencia
-
-### Características Técnicas
-- **Frontend**: HTML5, JavaScript, jQuery, Bootstrap
-- **Backend**: PHP 7.4+
-- **Base de datos**: MySQL/MariaDB
-- **Componentes**:
-  - FullCalendar 5.11.3
-  - SweetAlert2
-  - Bootstrap 4.6.0
-  - Moment.js 2.29.4
-
-### Validaciones del Sistema
-1. **Horarios Normales**
-   - Hora de salida posterior a hora de entrada
-   - No superposición de horarios
-   - Cálculo automático de horas trabajadas
-
-2. **Otros Tipos**
-   - Un registro por empleado por día
-   - Sin requisito de horas
-   - Validación de tipo de registro
-
-### Visualización
-- **Colores por tipo**:
-  - Normal: Azul (#007bff)
-  - Descanso: Gris (#6c757d)
-  - Baja: Blanco/Rojo (#ffffff/#dc3545)
-  - Otros: Gris (#6c757d)
-
-- **Iconos**:
-  - Normal: Sin icono
-  - Descanso: 🏠
-  - Baja: 🏥
-  - Otros: ⚠️
-
-### Funcionalidades Principales
-1. **Gestión de Horarios**
-   - Agregar/Editar/Eliminar horarios
-   - Diferentes tipos de registro
-   - Copia de horarios entre meses
-
-2. **Validaciones**
-   - Control de superposición
-   - Validación de campos según tipo
-   - Verificación de permisos
-
-3. **Interfaz**
-   - Calendario interactivo
-   - Modales para gestión
-   - Mensajes de confirmación
-
-## Instalación y Configuración
-1. Requisitos del servidor:
-   - PHP 7.4 o superior
-   - MySQL/MariaDB
-   - Servidor web (Apache/Nginx)
-
-2. Configuración de base de datos:
-   - Importar estructura desde `molimepi.sql`
-   - Configurar credenciales en `config/database.php`
-
-## Seguridad
-- Autenticación de usuarios
-- Control de roles (Administrador/Empleado)
-- Validación de sesiones
-- Protección contra SQL Injection
-- Sanitización de datos
-
-## Mantenimiento
-- Respaldo regular de base de datos
-- Monitoreo de logs de error
-- Actualización de dependencias
-- Revisión de permisos
-
-## Soporte
-Para reportar problemas o solicitar mejoras:
-1. Documentar el problema/solicitud
-2. Incluir capturas de pantalla si es necesario
-3. Especificar el comportamiento esperado
+MOLIMEPI es un sistema integral de gestión de empleados que permite administrar horarios, asistencias, solicitudes y más. Diseñado para facilitar la gestión del personal en empresas de cualquier tamaño.
 
 ## Características Principales
 
 ### Gestión de Usuarios
-- Registro y administración de empleados
-- Roles diferenciados (Administrador y Empleado)
-- Gestión de perfiles de usuario
-- Cambio de contraseñas
-- Carga de imágenes de perfil
+- Registro de empleados y administradores
+- Perfiles con información detallada
+- Gestión de roles y permisos
+- Sistema de recuperación de contraseña
+- Validaciones de seguridad en contraseñas
 
-### Control de Horarios
-- Calendario interactivo para programación de horarios
-- Asignación de horarios por empleado
-- Visualización de horarios diarios, semanales y mensuales
-- Edición y eliminación de horarios programados
+### Gestión de Horarios
+- Registro de horarios de trabajo
+- Diferentes tipos de registro (normal, descanso, baja, otros)
+- Copia de horarios entre meses
+- Prevención de superposición de horarios
+- Visualización en calendario
 
-### Registro de Asistencia
-- Marcación de entrada y salida
-- Registro de asistencia diaria
-- Visualización de registros históricos
-- Estado de asistencia en tiempo real
+### Sistema de Notificaciones
+- Notificaciones en tiempo real
+- Diferentes tipos de notificaciones (contraseña, horarios, general)
+- Contador de notificaciones no leídas
+- Marcado automático de notificaciones leídas
 
-### Solicitudes y Permisos
-- Sistema de solicitudes para empleados
-- Gestión de permisos y ausencias
-- Comunicación interna mediante sistema de correos
+### Solicitudes y Aprobaciones
+- Solicitudes de cambio de contraseña
+- Solicitudes de horas extra
+- Sistema de aprobación por administradores
+- Notificaciones automáticas de estado
 
-### Reportes y Exportación
-- Generación de reportes de asistencia
-- Exportación de datos en formatos PDF y Excel
-- Visualización de estadísticas
+## Requisitos Técnicos
 
-## Tecnologías Utilizadas
-- PHP
-- MySQL/PDO
-- HTML5
-- CSS3
-- JavaScript
-- Bootstrap
-- FullCalendar
-- FontAwesome
+### Servidor
+- PHP 8.2 o superior
+- MySQL/MariaDB 10.4 o superior
+- Servidor web Apache/Nginx
 
-## Estructura del Sistema
-- `/public`: Archivos públicos y páginas del sistema
-- `/config`: Configuraciones y conexión a base de datos
-- `/logs`: Registros del sistema
-- `/imgs`: Almacenamiento de imágenes
+### Dependencias
+- PHPMailer para envío de correos
+- Bootstrap 4.6 para la interfaz
+- jQuery 3.6 para funcionalidades dinámicas
+- SweetAlert2 para alertas personalizadas
+- Font Awesome para iconos
 
-## Roles de Usuario
+## Instalación
 
-### Administrador
-- Gestión completa de empleados
-- Administración de horarios
-- Exportación de reportes
-- Gestión de solicitudes
-- Configuración del sistema
+1. Clonar el repositorio:
+```bash
+git clone [URL_DEL_REPOSITORIO]
+```
 
-### Empleado
-- Visualización de horarios
-- Registro de asistencia
-- Envío de solicitudes
-- Gestión de perfil personal
+2. Importar la base de datos:
+```bash
+mysql -u [usuario] -p [nombre_base_datos] < molimepi.sql
+```
+
+3. Configurar el archivo de conexión:
+```bash
+cp config/database.example.php config/database.php
+```
+Editar `config/database.php` con los datos de conexión.
+
+4. Configurar el servidor de correo:
+- Editar las credenciales SMTP en los archivos que usan PHPMailer
+- Asegurarse de que el servidor permita envío de correos
+
+5. Configurar permisos:
+```bash
+chmod 755 public/imgs/
+chmod 644 public/imgs/*
+```
+
+## Estructura del Proyecto
+
+```
+molimepi/
+├── config/
+│   ├── database.php
+│   └── phpmailer/
+├── public/
+│   ├── imgs/
+│   ├── js/
+│   └── *.php
+└── docs/
+    ├── BITACORA.md
+    └── README.md
+```
+
+## Estructura de la Base de Datos
+
+### Tablas Principales
+- `usuarios`: Almacena información de usuarios y empleados
+- `horarios_trabajo`: Registra horarios y tipos de jornada
+- `registro_asistencia`: Control de asistencia diaria
+- `solicitudes_password`: Gestión de solicitudes de cambio de contraseña
+- `notificaciones`: Sistema de notificaciones internas
+
+### Estructura de Tablas Clave
+
+#### solicitudes_password
+```sql
+CREATE TABLE solicitudes_password (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    usuario_id INT NOT NULL,
+    token VARCHAR(255) NOT NULL,
+    estado ENUM('Pendiente', 'Aprobada', 'Rechazada') NOT NULL DEFAULT 'Pendiente',
+    fecha_solicitud TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    fecha_actualizacion TIMESTAMP NULL ON UPDATE CURRENT_TIMESTAMP,
+    FOREIGN KEY (usuario_id) REFERENCES usuarios(ID)
+);
+```
+
+Esta tabla es fundamental para:
+- Gestión segura de solicitudes de cambio de contraseña
+- Seguimiento de estados de solicitudes
+- Registro temporal de cambios
+- Vinculación con sistema de notificaciones
 
 ## Seguridad
-- Autenticación de usuarios
-- Encriptación de contraseñas
-- Control de sesiones
-- Validación de roles
-- Protección contra inyección SQL
 
-## Desarrollado por
-MOLIMEPI - Todos los derechos reservados
+- Contraseñas hasheadas con BCRYPT
+- Validación de sesiones
+- Protección contra SQL Injection
+- Validación de permisos por rol
+- Tokens únicos para recuperación de contraseña
 
-## Registro de Cambios y Actualizaciones
+## Mantenimiento
 
-### Corrección de Bugs (17/03/2024)
-- Corrección en la carga de datos del empleado en el formulario de edición
-- Mejora en la sincronización de datos entre el modal y el formulario
-- Optimización en la selección de usuarios en el formulario
-- Simplificación del proceso de edición de horarios
-- Unificación de formularios de agregar y editar en un solo modal
-- Eliminación de redirecciones innecesarias
-- Mejora en la experiencia de usuario al editar horarios
-- Optimización del flujo de trabajo con modales
-- Validaciones mejoradas en el formulario
-- Corrección en el manejo de eventos de botones
-- Mejora en la persistencia de datos durante la edición
+### Base de Datos
+- Realizar backups periódicos
+- Limpiar notificaciones antiguas
+- Monitorear el crecimiento de las tablas
 
-### Nuevas Funcionalidades (17/03/2024)
-- Implementación de copia de horarios de un mes a otro
-- Adición de tipos de registro (normal, descanso, baja, otros)
-- Cálculo automático de horas diarias trabajadas
-- Mejora en la gestión de horarios especiales
-- Validaciones específicas por tipo de registro
+### Archivos
+- Limpiar imágenes no utilizadas
+- Revisar logs de errores
+- Actualizar dependencias
 
-### Gestión de Horarios (Última actualización)
-- Implementación de validación para evitar superposición de horarios
-- Los usuarios pueden tener múltiples horarios en el mismo día siempre que no se superpongan
-- Mejora en la edición de horarios existentes
-- Validación de rangos de tiempo para prevenir conflictos
-- Soporte para diferentes tipos de registros (normal, descanso, baja, otros)
-- Cálculo automático de horas trabajadas por día
-- Funcionalidad de copia de horarios entre meses
+## Soporte
 
-### Validaciones Implementadas
-- Verificación de superposición de horarios para el mismo empleado en la misma fecha
-- Control de rangos de tiempo para evitar conflictos entre horarios
-- Validación de campos obligatorios en formularios
-- Mensajes de error específicos para cada tipo de validación
+Para reportar problemas o solicitar ayuda:
+1. Revisar la documentación
+2. Consultar la bitácora de cambios
+3. Contactar al administrador del sistema
 
-### Recomendaciones de Uso
-1. Al crear o editar horarios, asegurarse de que no se superpongan con horarios existentes
-2. Verificar que las horas de entrada y salida sean coherentes
-3. Mantener actualizada la lista de empleados activos
-4. Revisar los mensajes de validación para corregir errores
-
-### Próximas Mejoras Planificadas
-- Implementación de vista de calendario para visualización de horarios
-- Mejora en la interfaz de usuario para la gestión de horarios
-- Sistema de notificaciones para cambios en horarios
-- Optimización de consultas de base de datos
+## Licencia
+Este proyecto está bajo la licencia [TIPO_DE_LICENCIA].

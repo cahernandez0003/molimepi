@@ -18,6 +18,17 @@ $mesOrigen = $_POST['mesOrigen'];
 $mesDestino = $_POST['mesDestino'];
 
 try {
+    // Verificar si existen registros en el mes destino
+    $stmt = $pdo->prepare("SELECT COUNT(*) FROM horarios_trabajo 
+                          WHERE DATE_FORMAT(fecha, '%Y-%m') = :mes_destino");
+    $stmt->execute(['mes_destino' => $mesDestino]);
+    $registrosDestino = $stmt->fetchColumn();
+
+    if ($registrosDestino > 0) {
+        echo json_encode(['error' => 'El mes destino ya tiene horarios registrados. Por favor, seleccione otro mes o elimine los horarios existentes.']);
+        exit;
+    }
+
     // Obtener los horarios del mes origen
     $stmt = $pdo->prepare("SELECT * FROM horarios_trabajo 
                           WHERE DATE_FORMAT(fecha, '%Y-%m') = :mes_origen");

@@ -46,7 +46,20 @@ $imagenPerfil = (!empty($usuario['imagen']) && file_exists("../" . $usuario['ima
             </li>
             <?php endif; ?>
         </ul>
-        <ul class="navbar-nav">
+        <ul class="navbar-nav ml-auto">
+            <!-- Notificaciones -->
+            <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle position-relative" href="#" id="notificacionesDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    <i class="fas fa-bell"></i>
+                    <span id="contador-notificaciones" class="badge badge-danger badge-pill position-absolute" style="top: 0; right: 0; display: none;">0</span>
+                </a>
+                <div class="dropdown-menu dropdown-menu-right" aria-labelledby="notificacionesDropdown" style="width: 300px; max-height: 400px; overflow-y: auto;">
+                    <h6 class="dropdown-header">Notificaciones</h6>
+                    <div id="lista-notificaciones">
+                        <!-- Las notificaciones se cargarán aquí dinámicamente -->
+                    </div>
+                </div>
+            </li>
             <!-- Información del Usuario -->
             <li class="nav-item dropdown">
                 <a class="nav-link dropdown-toggle d-flex align-items-center" href="#" id="userDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -84,3 +97,6 @@ function confirmarLogout() {
     });
 }
 </script>
+
+<!-- Agregar antes de </body> -->
+<script src="js/notificaciones.js"></script>

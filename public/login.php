@@ -104,6 +104,7 @@ function enviarCorreoCambioPassword($correo, $nombre, $nickname) {
                         <input type="password" id="password" name="password" class="form-control" required>
                     </div>
                     <button type="submit" class="btn btn-primary btn-block mt-3">Iniciar Sesión</button>
+                    <a href="olvide_password.php" class="btn btn-link btn-block">¿Olvidaste tu contraseña?</a>
                 </form>
             </div>
         </div>
