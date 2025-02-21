@@ -16,7 +16,7 @@ $usuario = $stmt->fetch(PDO::FETCH_ASSOC);
 $imagenPerfil = (!empty($usuario['imagen']) && file_exists("../" . $usuario['imagen'])) ? "../" . $usuario['imagen'] : '../public/imgs/nofoto.png';
 ?>
 
-<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
     <a class="navbar-brand" href="dashboard.php">MOLIMEPI</a>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav">
         <span class="navbar-toggler-icon"></span>
@@ -76,8 +76,20 @@ $imagenPerfil = (!empty($usuario['imagen']) && file_exists("../" . $usuario['ima
     </div>
 </nav>
 
-<!-- SweetAlert2 -->
+<div style="margin-top: 80px;"><!-- Espacio para compensar el navbar fijo --></div>
+
+<!-- Scripts necesarios -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+<!-- Script de notificaciones con ruta absoluta -->
+<script>
+    // Configuración global
+    window.baseUrl = '<?php echo "http://" . $_SERVER["HTTP_HOST"] . "/molimepi/public"; ?>';
+</script>
+<script src="<?php echo "http://" . $_SERVER["HTTP_HOST"] . "/molimepi/public/js/notificaciones.js"; ?>"></script>
 
 <script>
 function confirmarLogout() {
@@ -92,11 +104,13 @@ function confirmarLogout() {
         cancelButtonText: 'Cancelar'
     }).then((result) => {
         if (result.isConfirmed) {
-            window.location.href = "logout.php"; // Redirige si el usuario confirma
+            window.location.href = "logout.php";
         }
     });
 }
-</script>
 
-<!-- Agregar antes de </body> -->
-<script src="js/notificaciones.js"></script>
+// Inicializar dropdowns
+$(document).ready(function() {
+    $('.dropdown-toggle').dropdown();
+});
+</script>

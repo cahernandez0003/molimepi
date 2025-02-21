@@ -172,4 +172,84 @@ Se solicitó implementar diferentes tipos de registro para los horarios:
 ### Impacto
 - Mejor experiencia de usuario en la gestión de notificaciones
 - Sistema de recuperación de contraseña funcionando correctamente
-- Notificaciones más claras y funcionales 
+- Notificaciones más claras y funcionales
+
+## [20/03/2024] - Mejoras en Interfaz y Exportación de Horarios
+
+### Problemas Detectados
+1. Las notificaciones no funcionaban correctamente en todas las páginas
+2. El navbar se movía al hacer scroll
+3. No existía opción para exportar horarios en diferentes formatos
+
+### Soluciones Implementadas
+1. Correcciones en Sistema de Notificaciones:
+   - Actualización de rutas en `notificaciones.js` para usar rutas absolutas
+   - Mejorado el manejo de URLs en las notificaciones
+
+2. Mejoras en la Interfaz:
+   - Navbar fijo en la parte superior con `fixed-top`
+   - Agregado espacio de compensación para evitar superposición
+   - Mejorada la visualización en todas las páginas
+
+3. Sistema de Exportación:
+   - Implementada exportación a Excel usando PhpSpreadsheet
+   - Implementada exportación a PDF usando Dompdf
+   - Agregados botones de exportación en la página de horarios
+   - Personalización de estilos en los reportes
+
+### Archivos Modificados
+- `public/js/notificaciones.js`
+- `public/navbar.php`
+- `public/horarios.php`
+- Nuevo: `public/exportar_horarios.php`
+- Nuevo: `composer.json`
+
+### Dependencias Agregadas
+```json
+{
+    "require": {
+        "phpoffice/phpspreadsheet": "^1.29",
+        "dompdf/dompdf": "^2.0"
+    }
+}
+```
+
+### Impacto
+- Mejor experiencia de usuario con navegación fija
+- Sistema de notificaciones más robusto
+- Nuevas funcionalidades de exportación de datos
+- Reportes profesionales en PDF y Excel 
+
+## [21/03/2024] - Correcciones en Dropdowns y Sistema de Notificaciones
+
+### Problemas Detectados
+1. Los dropdowns del navbar no funcionaban correctamente
+2. Las notificaciones no se mostraban en todas las páginas
+3. Conflictos con múltiples instancias de jQuery y Bootstrap
+
+### Soluciones Implementadas
+1. Reorganización de Scripts:
+   - Carga ordenada de dependencias (jQuery, Popper.js, Bootstrap)
+   - Eliminación de cargas duplicadas de scripts
+   - Implementación de variable global para rutas base
+
+2. Mejoras en Dropdowns:
+   - Inicialización explícita de dropdowns de Bootstrap
+   - Corrección de eventos click en notificaciones
+   - Mejor manejo de estados de dropdown
+
+3. Optimización de Notificaciones:
+   - Uso de rutas absolutas consistentes
+   - Mejora en el manejo de eventos
+   - Prevención de conflictos de JavaScript
+
+### Archivos Modificados
+- `public/navbar.php`: Reorganización de scripts y mejora en estructura
+- `public/js/notificaciones.js`: Actualización de lógica de notificaciones
+- Varios archivos: Eliminación de cargas duplicadas de scripts
+
+### Impacto
+- Mejor funcionamiento de elementos de navegación
+- Sistema de notificaciones más robusto
+- Reducción de conflictos entre scripts
+- Mejor experiencia de usuario en toda la aplicación 

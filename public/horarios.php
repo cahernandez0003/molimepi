@@ -25,18 +25,30 @@ try {
 <body>
     <?php include 'navbar.php'; ?>
     <div class="container mt-4">
-        <h2><i class="fas fa-calendar-alt"></i> Gestión de Horarios</h2>
-        <div id="calendario"></div>
+        <div class="card">
+            <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
+                <h3 class="mb-0">
+                    <i class="fas fa-clock"></i> Gestión de Horarios
+                </h3>
+                <div>
+                    <button type="button" class="btn btn-success" onclick="exportarHorarios('excel')">
+                        <i class="fas fa-file-excel"></i> Exportar Excel
+                    </button>
+                    <button type="button" class="btn btn-danger" onclick="exportarHorarios('pdf')">
+                        <i class="fas fa-file-pdf"></i> Exportar PDF
+                    </button>
+                </div>
+            </div>
+            <div class="card-body">
+                <div id="calendario"></div>
+            </div>
+        </div>
     </div>
-
-    <!-- Cargar jQuery antes de cualquier otro script -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/4.6.0/js/bootstrap.bundle.min.js"></script>
 
     <!-- Cargar estilos de FullCalendar -->
     <link href="https://cdn.jsdelivr.net/npm/fullcalendar@5.11.3/main.min.css" rel="stylesheet">
     
-    <!-- Cargar FullCalendar y Moment.js después de jQuery -->
+    <!-- Cargar FullCalendar y Moment.js -->
     <script src="https://cdn.jsdelivr.net/npm/moment@2.29.4/moment.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/fullcalendar@5.11.3/main.min.js"></script>
 
@@ -210,116 +222,7 @@ try {
                 }
             }, 100);
         }
-    </script>
 
-    <!-- Modal para agregar horarios -->
-    <div class="modal fade" id="modalAgregarHorario" tabindex="-1" role="dialog" aria-labelledby="modalAgregarHorarioLabel" aria-hidden="true">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="modalAgregarHorarioLabel">Agregar Horario</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <form id="formHorario">
-                    <div class="modal-body">
-                        <input type="hidden" id="horario_id" name="horario_id">
-                        <input type="hidden" id="fechaSeleccionada" name="fecha" required>
-                        
-                        <div class="form-group">
-                            <label for="usuario_id">Empleado:</label>
-                            <select id="usuario_id" name="usuario_id" class="form-control" required>
-                                <option value="">Seleccione un empleado</option>
-                                <?php foreach ($empleados as $empleado): ?>
-                                    <option value="<?php echo htmlspecialchars($empleado['ID']); ?>">
-                                        <?php echo htmlspecialchars($empleado['nombre']); ?>
-                                    </option>
-                                <?php endforeach; ?>
-                            </select>
-                        </div>
-
-                        <div class="form-group">
-                            <label for="tipo">Tipo de Registro:</label>
-                            <select id="tipo" name="tipo" class="form-control" required onchange="toggleHorarioFields()">
-                                <option value="normal">Horario Normal</option>
-                                <option value="descanso">Descanso</option>
-                                <option value="baja">Baja</option>
-                                <option value="otros">Otros</option>
-                            </select>
-                        </div>
-
-                        <div id="camposHorario">
-                            <div class="form-group">
-                                <label for="hora_entrada">Hora de Entrada:</label>
-                                <input type="time" id="hora_entrada" name="hora_entrada" class="form-control" required>
-                            </div>
-                            <div class="form-group">
-                                <label for="hora_salida">Hora de Salida:</label>
-                                <input type="time" id="hora_salida" name="hora_salida" class="form-control" required>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="submit" class="btn btn-primary">Guardar</button>
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
-                    </div>
-                </form>
-            </div>
-        </div>
-    </div>
-
-    <!-- Modal para copiar horarios -->
-    <div class="modal fade" id="modalCopiarHorarios" tabindex="-1" role="dialog" aria-labelledby="modalCopiarHorariosLabel" aria-hidden="true">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="modalCopiarHorariosLabel">Copiar Horarios de Mes</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <form id="formCopiarHorarios">
-                    <div class="modal-body">
-                        <div class="form-group">
-                            <label for="mesOrigen">Mes Origen:</label>
-                            <input type="month" id="mesOrigen" name="mesOrigen" class="form-control" required>
-                        </div>
-                        <div class="form-group">
-                            <label for="mesDestino">Mes Destino:</label>
-                            <input type="month" id="mesDestino" name="mesDestino" class="form-control" required>
-                        </div>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="submit" class="btn btn-primary">Copiar Horarios</button>
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
-                    </div>
-                </form>
-            </div>
-        </div>
-    </div>
-
-    <!-- Modal para mostrar los eventos del día seleccionado -->
-    <div class="modal fade" id="modalEventosDia" tabindex="-1" aria-labelledby="tituloEventos" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="tituloEventos">Horarios del día</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body" id="contenidoEventos">
-                    <!-- Aquí se mostrarán los eventos -->
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <script>
         function toggleHorarioFields() {
             const tipo = $('#tipo').val();
             const camposHorario = $('#camposHorario');
@@ -452,6 +355,118 @@ try {
             $('#formHorario')[0].reset();
             $('#horario_id').val('');
         });
+
+        function exportarHorarios(formato) {
+            const mesActual = document.getElementById('mes').value;
+            window.location.href = `exportar_horarios.php?formato=${formato}&mes=${mesActual}`;
+        }
     </script>
+
+    <!-- Modal para agregar horarios -->
+    <div class="modal fade" id="modalAgregarHorario" tabindex="-1" role="dialog" aria-labelledby="modalAgregarHorarioLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="modalAgregarHorarioLabel">Agregar Horario</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <form id="formHorario">
+                    <div class="modal-body">
+                        <input type="hidden" id="horario_id" name="horario_id">
+                        <input type="hidden" id="fechaSeleccionada" name="fecha" required>
+                        
+                        <div class="form-group">
+                            <label for="usuario_id">Empleado:</label>
+                            <select id="usuario_id" name="usuario_id" class="form-control" required>
+                                <option value="">Seleccione un empleado</option>
+                                <?php foreach ($empleados as $empleado): ?>
+                                    <option value="<?php echo htmlspecialchars($empleado['ID']); ?>">
+                                        <?php echo htmlspecialchars($empleado['nombre']); ?>
+                                    </option>
+                                <?php endforeach; ?>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="tipo">Tipo de Registro:</label>
+                            <select id="tipo" name="tipo" class="form-control" required onchange="toggleHorarioFields()">
+                                <option value="normal">Horario Normal</option>
+                                <option value="descanso">Descanso</option>
+                                <option value="baja">Baja</option>
+                                <option value="otros">Otros</option>
+                            </select>
+                        </div>
+
+                        <div id="camposHorario">
+                            <div class="form-group">
+                                <label for="hora_entrada">Hora de Entrada:</label>
+                                <input type="time" id="hora_entrada" name="hora_entrada" class="form-control" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="hora_salida">Hora de Salida:</label>
+                                <input type="time" id="hora_salida" name="hora_salida" class="form-control" required>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-primary">Guardar</button>
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal para copiar horarios -->
+    <div class="modal fade" id="modalCopiarHorarios" tabindex="-1" role="dialog" aria-labelledby="modalCopiarHorariosLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="modalCopiarHorariosLabel">Copiar Horarios de Mes</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <form id="formCopiarHorarios">
+                    <div class="modal-body">
+                        <div class="form-group">
+                            <label for="mesOrigen">Mes Origen:</label>
+                            <input type="month" id="mesOrigen" name="mesOrigen" class="form-control" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="mesDestino">Mes Destino:</label>
+                            <input type="month" id="mesDestino" name="mesDestino" class="form-control" required>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-primary">Copiar Horarios</button>
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal para mostrar los eventos del día seleccionado -->
+    <div class="modal fade" id="modalEventosDia" tabindex="-1" aria-labelledby="tituloEventos" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="tituloEventos">Horarios del día</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body" id="contenidoEventos">
+                    <!-- Aquí se mostrarán los eventos -->
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                </div>
+            </div>
+        </div>
+    </div>
 </body>
 </html>
