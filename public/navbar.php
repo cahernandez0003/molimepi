@@ -1,15 +1,15 @@
 <?php
 require_once '../config/database.php';
+require_once 'includes/auth.php';
 
 // Verificar si el usuario está autenticado antes de acceder a la BD
-if (!isset($_SESSION['usuario_id'])) {
-    header('Location: login.php');
-    exit();
-}
+verificarAcceso();
+$usuario_id = obtenerIdUsuario();
+$es_admin = esAdmin();
 
 // Obtener los datos del usuario en sesión
 $stmt = $pdo->prepare("SELECT nombre, imagen FROM usuarios WHERE ID = :id");
-$stmt->execute(['id' => $_SESSION['usuario_id']]);
+$stmt->execute(['id' => $usuario_id]);
 $usuario = $stmt->fetch(PDO::FETCH_ASSOC);
 
 // Si el usuario no tiene imagen, usar una por defecto
@@ -27,25 +27,26 @@ $imagenPerfil = (!empty($usuario['imagen']) && file_exists("../" . $usuario['ima
                 <li class="nav-item">
                     <a class="nav-link" href="dashboard.php"><i class="fas fa-home"></i> Inicio</a>
                 </li>
-                <?php if ($_SESSION['rol'] === 'Administrador'): ?>
-                <li class="nav-item">
-                    <a class="nav-link" href="empleados.php"><i class="fas fa-users"></i> Empleados</a>
-                </li>
+                <?php if ($es_admin): ?>
+                    <li class="nav-item">
+                        <a class="nav-link" href="empleados.php"><i class="fas fa-users"></i> Empleados</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="horarios.php"><i class="fas fa-clock"></i> Horarios</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="exportar.php"><i class="fas fa-file-export"></i> Exportar</a>
+                    </li>
                 <?php endif; ?>
-                <li class="nav-item">
-                    <a class="nav-link" href="horarios.php"><i class="fas fa-clock"></i> Horarios</a>
-                </li>
                 <li class="nav-item">
                     <a class="nav-link" href="asistencia.php"><i class="fas fa-clipboard-check"></i> Asistencia</a>
                 </li>
                 <li class="nav-item">
+                    <a class="nav-link" href="hrs_extras.php"><i class="fas fa-clock"></i> Horas Extra</a>
+                </li>
+                <li class="nav-item">
                     <a class="nav-link" href="solicitudes.php"><i class="fas fa-envelope"></i> Solicitudes</a>
                 </li>
-                <?php if ($_SESSION['rol'] === 'Administrador'): ?>
-                <li class="nav-item">
-                    <a class="nav-link" href="exportar.php"><i class="fas fa-file-export"></i> Exportar</a>
-                </li>
-                <?php endif; ?>
             </ul>
             <ul class="navbar-nav ms-auto">
                 <!-- Notificaciones -->
@@ -73,6 +74,9 @@ $imagenPerfil = (!empty($usuario['imagen']) && file_exists("../" . $usuario['ima
                     </a>
                     <div class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">
                         <a class="dropdown-item" href="perfil.php"><i class="fas fa-user"></i> Mi Perfil</a>
+                        <?php if (!$es_admin): ?>
+                            <a class="dropdown-item" href="mi_horario.php"><i class="fas fa-calendar"></i> Mi Horario</a>
+                        <?php endif; ?>
                         <div class="dropdown-divider"></div>
                         <a class="dropdown-item text-danger" href="#" onclick="confirmarLogout()"><i class="fas fa-sign-out-alt"></i> Cerrar Sesión</a>
                     </div>
