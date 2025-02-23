@@ -11,6 +11,8 @@ MOLIMEPI es un sistema integral de gestión de empleados que permite administrar
 - Gestión de roles y permisos
 - Sistema de recuperación de contraseña
 - Validaciones de seguridad en contraseñas
+- Manejo seguro de imágenes de perfil
+- Eliminación segura de usuarios y archivos asociados
 
 ### Gestión de Horarios
 - Registro de horarios de trabajo
@@ -30,6 +32,14 @@ MOLIMEPI es un sistema integral de gestión de empleados que permite administrar
 - Solicitudes de horas extra
 - Sistema de aprobación por administradores
 - Notificaciones automáticas de estado
+
+### Manejo de Archivos
+- Almacenamiento estructurado de imágenes
+- Rutas estandarizadas para archivos
+- Limpieza automática de archivos no utilizados
+- Imagen por defecto para nuevos usuarios
+- Validación de tipos de archivo
+- Gestión de permisos de acceso
 
 ## Requisitos Técnicos
 
@@ -81,7 +91,8 @@ molimepi/
 │   ├── database.php
 │   └── phpmailer/
 ├── public/
-│   ├── imgs/
+│   ├── imgs/          # Almacenamiento de imágenes
+│   │   └── nofoto.png # Imagen por defecto
 │   ├── js/
 │   └── *.php
 └── docs/
@@ -126,6 +137,8 @@ Esta tabla es fundamental para:
 - Protección contra SQL Injection
 - Validación de permisos por rol
 - Tokens únicos para recuperación de contraseña
+- Confirmación doble para acciones críticas
+- Manejo seguro de archivos subidos
 
 ## Mantenimiento
 
@@ -133,11 +146,13 @@ Esta tabla es fundamental para:
 - Realizar backups periódicos
 - Limpiar notificaciones antiguas
 - Monitorear el crecimiento de las tablas
+- Verificar integridad de datos
 
 ### Archivos
 - Limpiar imágenes no utilizadas
 - Revisar logs de errores
 - Actualizar dependencias
+- Mantener permisos de archivos correctos
 
 ## Soporte
 
@@ -148,3 +163,10 @@ Para reportar problemas o solicitar ayuda:
 
 ## Licencia
 Este proyecto está bajo la licencia [TIPO_DE_LICENCIA].
+
+### Convenciones de Código
+- Rutas de imágenes: `public/imgs/nombre_imagen.jpg`
+- Imagen por defecto: `public/imgs/nofoto.png`
+- Validaciones del lado del cliente y servidor
+- Mensajes de error y éxito consistentes
+- Modales de confirmación para acciones críticas

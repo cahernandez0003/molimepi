@@ -1,48 +1,55 @@
 <?php
-session_start();
-require_once '../config/database.php';
+require_once 'includes/config.php';
+require_once 'includes/auth.php';
 
-header('Content-Type: application/json');
-
-if (!isset($_SESSION['usuario_id'])) {
-    echo json_encode(['success' => false, 'error' => 'No autorizado']);
+if (!estaAutenticado()) {
+    http_response_code(401);
+    echo json_encode(['error' => 'No autorizado']);
     exit;
 }
 
+$usuario_id = $_SESSION['usuario_id'];
+$es_admin = $_SESSION['rol'] === 'Administrador';
+
 try {
-    // Obtener notificaciones del usuario
-    $stmt = $pdo->prepare("
-        SELECT n.*, 
-               CASE 
-                   WHEN n.tipo = 'solicitud_password' THEN 'solicitudes_password.php'
-                   ELSE '#'
-               END as url
-        FROM notificaciones n
-        WHERE n.usuario_id = :usuario_id
-        ORDER BY n.fecha_creacion DESC, n.leida ASC
-        LIMIT 10
-    ");
-    $stmt->execute(['usuario_id' => $_SESSION['usuario_id']]);
+    // Obtener notificaciones según el rol
+    if ($es_admin) {
+        $sql = "SELECT n.*, u.nickname as solicitante 
+                FROM notificaciones n 
+                LEFT JOIN usuarios u ON n.usuario_id = u.ID 
+                WHERE n.tipo = 'solicitud_password'
+                ORDER BY n.fecha_creacion DESC 
+                LIMIT 5";
+        $stmt = $pdo->prepare($sql);
+        $stmt->execute();
+    } else {
+        $sql = "SELECT * FROM notificaciones 
+                WHERE usuario_id = :usuario_id 
+                ORDER BY fecha_creacion DESC 
+                LIMIT 5";
+        $stmt = $pdo->prepare($sql);
+        $stmt->execute(['usuario_id' => $usuario_id]);
+    }
+    
     $notificaciones = $stmt->fetchAll(PDO::FETCH_ASSOC);
-
+    
     // Contar notificaciones no leídas
-    $stmt = $pdo->prepare("
-        SELECT COUNT(*) 
-        FROM notificaciones 
-        WHERE usuario_id = :usuario_id AND leida = 0
-    ");
-    $stmt->execute(['usuario_id' => $_SESSION['usuario_id']]);
+    $sql = "SELECT COUNT(*) FROM notificaciones 
+            WHERE usuario_id = :usuario_id AND leida = 0";
+    $stmt = $pdo->prepare($sql);
+    $stmt->execute(['usuario_id' => $usuario_id]);
     $no_leidas = $stmt->fetchColumn();
-
+    
     echo json_encode([
         'success' => true,
         'notificaciones' => $notificaciones,
         'no_leidas' => $no_leidas
     ]);
+    
 } catch (PDOException $e) {
-    error_log("Error en obtener_notificaciones.php: " . $e->getMessage());
+    http_response_code(500);
     echo json_encode([
-        'success' => false, 
+        'success' => false,
         'error' => 'Error al obtener notificaciones'
     ]);
 } 

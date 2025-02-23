@@ -253,3 +253,64 @@ Se solicitó implementar diferentes tipos de registro para los horarios:
 - Sistema de notificaciones más robusto
 - Reducción de conflictos entre scripts
 - Mejor experiencia de usuario en toda la aplicación 
+
+## [20/03/2024] - Implementación de Sistema de Comentarios en Notificaciones
+
+### Problema Detectado
+- Los administradores necesitaban una forma de proporcionar retroalimentación al aprobar o rechazar solicitudes de restablecimiento de contraseña
+- Los usuarios no recibían información detallada sobre por qué su solicitud fue aprobada o rechazada
+
+### Cambios Realizados
+1. Modificación de la tabla `notificaciones` para incluir campo de comentarios
+2. Actualización de `solicitudes_password.php`:
+   - Agregado campo de comentario en el formulario de aprobación/rechazo
+   - Implementación de modal SweetAlert2 para captura de comentarios
+   - Mejora en la experiencia de usuario al procesar solicitudes
+
+### Impacto
+- Mayor transparencia en el proceso de gestión de contraseñas
+- Mejor comunicación entre administradores y usuarios
+- Registro histórico de decisiones administrativas
+
+### Detalles Técnicos
+- Uso de SweetAlert2 para interfaces de usuario mejoradas
+- Validación de comentarios obligatorios
+- Integración con el sistema existente de notificaciones 
+
+## [21/03/2024] - Correcciones en Manejo de Imágenes y Eliminación de Usuarios
+
+### Problemas Detectados
+1. Inconsistencia en las rutas de imágenes en la base de datos
+2. Modal de eliminación no funcionaba correctamente con Bootstrap 5
+3. Falta de limpieza de archivos de imagen al eliminar usuarios
+
+### Soluciones Implementadas
+1. Estandarización de Rutas de Imágenes:
+   - Todas las rutas ahora usan el formato `public/imgs/nombre_imagen.jpg`
+   - Corrección en la lógica de guardado de imágenes en `empleados.php` y `editar_usuario.php`
+   - Manejo consistente de la imagen por defecto (`public/imgs/nofoto.png`)
+
+2. Actualización de Modales a Bootstrap 5:
+   - Actualización de atributos (`data-bs-toggle`, `data-bs-target`, `data-bs-dismiss`)
+   - Reemplazo de clases obsoletas (`close` → `btn-close`)
+   - Mejora en el manejo de eventos con JavaScript vanilla
+
+3. Mejora en el Sistema de Eliminación:
+   - Implementación de confirmación doble (modal + SweetAlert2)
+   - Eliminación automática de archivos de imagen asociados
+   - Manejo de errores y mensajes de retroalimentación
+
+### Impacto
+- Mejor consistencia en el manejo de archivos de imagen
+- Interfaz de usuario más robusta y moderna
+- Prevención de archivos huérfanos en el servidor
+
+### Archivos Modificados
+- `public/empleados.php`
+- `public/editar_usuario.php`
+- `public/eliminar_usuario.php` (nuevo)
+
+### Próximos Pasos
+1. Implementar validación de tipos de archivo para imágenes
+2. Agregar compresión de imágenes
+3. Mejorar la gestión de permisos de archivos 

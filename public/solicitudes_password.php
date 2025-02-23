@@ -20,6 +20,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $solicitud_id = $_POST['solicitud_id'];
     $accion = $_POST['accion'];
     $usuario_id = $_POST['usuario_id'];
+    $comentario = $_POST['comentario'] ?? '';
 
     try {
         $pdo->beginTransaction();
@@ -57,11 +58,12 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             ? "Tu solicitud de restablecimiento de contraseña ha sido aprobada. Tu nueva contraseña temporal es: 123456" 
             : "Tu solicitud de restablecimiento de contraseña ha sido rechazada.";
 
-        $stmt = $pdo->prepare("INSERT INTO notificaciones (usuario_id, tipo, mensaje, leida) 
-                              VALUES (:usuario_id, 'solicitud_password', :mensaje, 0)");
+        $stmt = $pdo->prepare("INSERT INTO notificaciones (usuario_id, tipo, mensaje, comentario, leida) 
+                              VALUES (:usuario_id, 'solicitud_password', :mensaje, :comentario, 0)");
         $stmt->execute([
             'usuario_id' => $usuario_id,
-            'mensaje' => $mensaje
+            'mensaje' => $mensaje,
+            'comentario' => $comentario
         ]);
 
         // Enviar correo al usuario
@@ -174,20 +176,14 @@ $solicitudes = $stmt->fetchAll(PDO::FETCH_ASSOC);
                                                 <td><?php echo date('d/m/Y H:i', strtotime($solicitud['fecha_solicitud'])); ?></td>
                                                 <td>
                                                     <?php if ($solicitud['estado'] === 'Pendiente'): ?>
-                                                        <form method="post" class="d-inline" onsubmit="return confirm('¿Estás seguro de aprobar esta solicitud?');">
+                                                        <form method="post" class="d-inline" onsubmit="return confirmarAccion(event, '<?php echo $accion; ?>');">
                                                             <input type="hidden" name="solicitud_id" value="<?php echo $solicitud['id']; ?>">
                                                             <input type="hidden" name="usuario_id" value="<?php echo $solicitud['usuario_id']; ?>">
-                                                            <input type="hidden" name="accion" value="aprobar">
-                                                            <button type="submit" class="btn btn-success btn-sm">
-                                                                <i class="fas fa-check"></i> Aprobar
-                                                            </button>
-                                                        </form>
-                                                        <form method="post" class="d-inline" onsubmit="return confirm('¿Estás seguro de rechazar esta solicitud?');">
-                                                            <input type="hidden" name="solicitud_id" value="<?php echo $solicitud['id']; ?>">
-                                                            <input type="hidden" name="usuario_id" value="<?php echo $solicitud['usuario_id']; ?>">
-                                                            <input type="hidden" name="accion" value="rechazar">
-                                                            <button type="submit" class="btn btn-danger btn-sm">
-                                                                <i class="fas fa-times"></i> Rechazar
+                                                            <input type="hidden" name="accion" value="<?php echo $accion; ?>">
+                                                            <input type="hidden" name="comentario" id="comentario_<?php echo $solicitud['id']; ?>">
+                                                            <button type="submit" class="btn btn-<?php echo $accion === 'aprobar' ? 'success' : 'danger'; ?> btn-sm">
+                                                                <i class="fas fa-<?php echo $accion === 'aprobar' ? 'check' : 'times'; ?>"></i> 
+                                                                <?php echo ucfirst($accion); ?>
                                                             </button>
                                                         </form>
                                                     <?php endif; ?>
@@ -203,5 +199,35 @@ $solicitudes = $stmt->fetchAll(PDO::FETCH_ASSOC);
             </div>
         </div>
     </div>
+
+    <script>
+    function confirmarAccion(event, accion) {
+        event.preventDefault();
+        const form = event.target;
+        const solicitudId = form.querySelector('input[name="solicitud_id"]').value;
+
+        Swal.fire({
+            title: `¿${accion === 'aprobar' ? 'Aprobar' : 'Rechazar'} esta solicitud?`,
+            text: "Por favor, agregue un comentario:",
+            input: 'textarea',
+            inputPlaceholder: 'Escriba un comentario...',
+            showCancelButton: true,
+            confirmButtonText: 'Confirmar',
+            cancelButtonText: 'Cancelar',
+            inputValidator: (value) => {
+                if (!value) {
+                    return 'Debe escribir un comentario';
+                }
+            }
+        }).then((result) => {
+            if (result.isConfirmed) {
+                document.getElementById(`comentario_${solicitudId}`).value = result.value;
+                form.submit();
+            }
+        });
+
+        return false;
+    }
+    </script>
 </body>
 </html> 

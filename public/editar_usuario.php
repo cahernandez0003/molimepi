@@ -36,9 +36,12 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
     if (!empty($_FILES['imagen']['name'])) {
         $imagenNombre = "public/imgs/" . basename($_FILES['imagen']['name']);
-        move_uploaded_file($_FILES['imagen']['tmp_name'], "../" . $imagenNombre);
+        move_uploaded_file($_FILES['imagen']['tmp_name'], "imgs/" . basename($_FILES['imagen']['name']));
     } else {
         $imagenNombre = $_POST['imagen_actual'];
+        if (!str_starts_with($imagenNombre, 'public/')) {
+            $imagenNombre = 'public/' . $imagenNombre;
+        }
     }
 
     if (!empty($_POST['password'])) {
@@ -120,7 +123,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                     <td>
                         <input type="file" class="form-control" name="imagen" accept="image/*">
                         <input type="hidden" name="imagen_actual" value="<?php echo htmlspecialchars($urow['imagen']); ?>">
-                        <img src="../<?php echo htmlspecialchars($urow['imagen']); ?>" alt="Imagen de usuario" style="width: 100px; height: 100px;" data-toggle="modal" data-target="#imageModal" data-img-src="../<?php echo htmlspecialchars($urow['imagen']); ?>" class="clickable-image">
+                        <img src="../<?php echo htmlspecialchars($urow['imagen']); ?>" alt="Imagen de usuario" style="width: 100px; height: 100px; margin-top: 10px;" data-toggle="modal" data-target="#imageModal" data-img-src="../<?php echo htmlspecialchars($urow['imagen']); ?>" class="clickable-image">
                     </td>
                 </tr>
                 <tr>
@@ -136,7 +139,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                     <i class="fa fa-times"></i> Cancelar
                 </button>
             </div>
-
         </form>
         <?php endforeach; ?>
     </div>

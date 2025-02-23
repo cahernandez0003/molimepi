@@ -17,62 +17,68 @@ $imagenPerfil = (!empty($usuario['imagen']) && file_exists("../" . $usuario['ima
 ?>
 
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
-    <a class="navbar-brand" href="dashboard.php">MOLIMEPI</a>
-    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav">
-        <span class="navbar-toggler-icon"></span>
-    </button>
-    <div class="collapse navbar-collapse" id="navbarNav">
-        <ul class="navbar-nav mr-auto">
-            <li class="nav-item">
-                <a class="nav-link" href="dashboard.php"><i class="fas fa-home"></i> Inicio</a>
-            </li>
-            <?php if ($_SESSION['rol'] === 'Administrador'): ?>
-            <li class="nav-item">
-                <a class="nav-link" href="empleados.php"><i class="fas fa-users"></i> Empleados</a>
-            </li>
-            <?php endif; ?>
-            <li class="nav-item">
-                <a class="nav-link" href="horarios.php"><i class="fas fa-clock"></i> Horarios</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="asistencia.php"><i class="fas fa-clipboard-check"></i> Asistencia</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="solicitudes.php"><i class="fas fa-envelope"></i> Solicitudes</a>
-            </li>
-            <?php if ($_SESSION['rol'] === 'Administrador'): ?>
-            <li class="nav-item">
-                <a class="nav-link" href="exportar.php"><i class="fas fa-file-export"></i> Exportar</a>
-            </li>
-            <?php endif; ?>
-        </ul>
-        <ul class="navbar-nav ml-auto">
-            <!-- Notificaciones -->
-            <li class="nav-item dropdown">
-                <a class="nav-link dropdown-toggle position-relative" href="#" id="notificacionesDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    <i class="fas fa-bell"></i>
-                    <span id="contador-notificaciones" class="badge badge-danger badge-pill position-absolute" style="top: 0; right: 0; display: none;">0</span>
-                </a>
-                <div class="dropdown-menu dropdown-menu-right" aria-labelledby="notificacionesDropdown" style="width: 300px; max-height: 400px; overflow-y: auto;">
-                    <h6 class="dropdown-header">Notificaciones</h6>
-                    <div id="lista-notificaciones">
-                        <!-- Las notificaciones se cargarán aquí dinámicamente -->
+    <div class="container-fluid">
+        <a class="navbar-brand" href="dashboard.php">MOLIMEPI</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                <li class="nav-item">
+                    <a class="nav-link" href="dashboard.php"><i class="fas fa-home"></i> Inicio</a>
+                </li>
+                <?php if ($_SESSION['rol'] === 'Administrador'): ?>
+                <li class="nav-item">
+                    <a class="nav-link" href="empleados.php"><i class="fas fa-users"></i> Empleados</a>
+                </li>
+                <?php endif; ?>
+                <li class="nav-item">
+                    <a class="nav-link" href="horarios.php"><i class="fas fa-clock"></i> Horarios</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="asistencia.php"><i class="fas fa-clipboard-check"></i> Asistencia</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="solicitudes.php"><i class="fas fa-envelope"></i> Solicitudes</a>
+                </li>
+                <?php if ($_SESSION['rol'] === 'Administrador'): ?>
+                <li class="nav-item">
+                    <a class="nav-link" href="exportar.php"><i class="fas fa-file-export"></i> Exportar</a>
+                </li>
+                <?php endif; ?>
+            </ul>
+            <ul class="navbar-nav ms-auto">
+                <!-- Notificaciones -->
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle position-relative" href="#" id="notificacionesDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        <i class="fas fa-bell"></i>
+                        <span id="contador-notificaciones" class="badge bg-danger rounded-pill position-absolute" style="top: 0; right: 0; display: none;">0</span>
+                    </a>
+                    <div class="dropdown-menu dropdown-menu-end" aria-labelledby="notificacionesDropdown">
+                        <div class="dropdown-header">Notificaciones</div>
+                        <div id="notificacionesLista">
+                            <!-- Las notificaciones se cargarán aquí -->
+                        </div>
+                        <div class="dropdown-divider"></div>
+                        <a class="dropdown-item text-center" href="ver_notificaciones.php">
+                            Ver todas las notificaciones
+                        </a>
                     </div>
-                </div>
-            </li>
-            <!-- Información del Usuario -->
-            <li class="nav-item dropdown">
-                <a class="nav-link dropdown-toggle d-flex align-items-center" href="#" id="userDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    <img src="<?php echo $imagenPerfil; ?>" class="rounded-circle" style="width: 40px; height: 40px; margin-right: 10px;">
-                    <span><?php echo htmlspecialchars($usuario['nombre']); ?></span>
-                </a>
-                <div class="dropdown-menu dropdown-menu-right" aria-labelledby="userDropdown">
-                    <a class="dropdown-item" href="perfil.php"><i class="fas fa-user"></i> Mi Perfil</a>
-                    <div class="dropdown-divider"></div>
-                    <a class="dropdown-item text-danger" href="#" onclick="confirmarLogout()"><i class="fas fa-sign-out-alt"></i> Cerrar Sesión</a>
-                </div>
-            </li>
-        </ul>
+                </li>
+                <!-- Información del Usuario -->
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle d-flex align-items-center" href="#" id="userDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        <img src="<?php echo $imagenPerfil; ?>" class="rounded-circle" style="width: 40px; height: 40px; margin-right: 10px;">
+                        <span><?php echo htmlspecialchars($usuario['nombre']); ?></span>
+                    </a>
+                    <div class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">
+                        <a class="dropdown-item" href="perfil.php"><i class="fas fa-user"></i> Mi Perfil</a>
+                        <div class="dropdown-divider"></div>
+                        <a class="dropdown-item text-danger" href="#" onclick="confirmarLogout()"><i class="fas fa-sign-out-alt"></i> Cerrar Sesión</a>
+                    </div>
+                </li>
+            </ul>
+        </div>
     </div>
 </nav>
 
@@ -80,8 +86,8 @@ $imagenPerfil = (!empty($usuario['imagen']) && file_exists("../" . $usuario['ima
 
 <!-- Scripts necesarios -->
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
 <!-- Script de notificaciones con ruta absoluta -->
@@ -108,9 +114,4 @@ function confirmarLogout() {
         }
     });
 }
-
-// Inicializar dropdowns
-$(document).ready(function() {
-    $('.dropdown-toggle').dropdown();
-});
 </script>

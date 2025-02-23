@@ -28,12 +28,12 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
     // Manejar la subida de imagen
     if (isset($_FILES['imagen']) && $_FILES['imagen']['error'] == 0) {
-        $imagen = 'imgs/' . basename($_FILES['imagen']['name']);
-        if (!move_uploaded_file($_FILES['imagen']['tmp_name'], $imagen)) {
+        $imagen = 'public/imgs/' . basename($_FILES['imagen']['name']);
+        if (!move_uploaded_file($_FILES['imagen']['tmp_name'], "imgs/" . basename($_FILES['imagen']['name']))) {
             echo "Error al subir la imagen.";
         }
     } else {
-        $imagen = 'imgs/nofoto.png'; // Ruta de la imagen predeterminada
+        $imagen = 'public/imgs/nofoto.png'; // Ruta de la imagen predeterminada
     }
 
     // Insertar en la tabla usuarios
@@ -91,14 +91,14 @@ $usuarios = $stmt->fetchAll(PDO::FETCH_ASSOC);
                             <td class="d-none d-md-table-cell"><?php echo htmlspecialchars($usuario['telefono']); ?></td>
                             <td class="d-none d-md-table-cell"><?php echo htmlspecialchars($usuario['correo']); ?></td>
                             <td>
-                                <img src="<?php echo str_replace('public/', '', htmlspecialchars($usuario['imagen'])); ?>" alt="Imagen de usuario" style="width: 50px; height: 50px;" data-toggle="modal" data-target="#imageModal" data-img-src="<?php echo str_replace('public/', '', htmlspecialchars($usuario['imagen'])); ?>" class="clickable-image">
+                                <img src="../<?php echo htmlspecialchars($usuario['imagen']); ?>" alt="Imagen de usuario" style="width: 50px; height: 50px;" data-toggle="modal" data-target="#imageModal" data-img-src="../<?php echo htmlspecialchars($usuario['imagen']); ?>" class="clickable-image">
                             </td>
                             <td>
                                 <div style="display: flex; align-items: center;">
                                     <a href="editar_usuario.php?id=<?php echo $usuario['ID']; ?>" class="btn btn-secondary" style="margin-right: 10px;">
                                         <i class="fas fa-edit"></i>
                                     </a>
-                                    <button class="btn btn-danger" data-toggle="modal" data-target="#confirmDeleteModal" data-id="<?php echo $usuario['ID']; ?>">
+                                    <button class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#confirmDeleteModal" data-id="<?php echo $usuario['ID']; ?>">
                                         <i class="fas fa-trash-alt"></i>
                                     </button>
                                 </div>
@@ -112,51 +112,49 @@ $usuarios = $stmt->fetchAll(PDO::FETCH_ASSOC);
     </div>
 
     <!-- Modal para nuevo usuario -->
-    <div class="modal fade" id="nuevoUsuarioModal" tabindex="-1" role="dialog" aria-labelledby="nuevoUsuarioModalLabel" aria-hidden="true">
-        <div class="modal-dialog" role="document">
+    <div class="modal fade" id="nuevoUsuarioModal" tabindex="-1" aria-labelledby="nuevoUsuarioModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title" id="nuevoUsuarioModalLabel">Nuevo Usuario</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <form method="post" enctype="multipart/form-data">
                     <div class="modal-body">
-                        <div class="form-group">
-                            <label for="nombre">Nombre:</label>
+                        <div class="mb-3">
+                            <label for="nombre" class="form-label">Nombre:</label>
                             <input type="text" id="nombre" name="nombre" class="form-control" required>
                         </div>
-                        <div class="form-group">
-                            <label for="identificacion">Identificación:</label>
+                        <div class="mb-3">
+                            <label for="identificacion" class="form-label">Identificación:</label>
                             <input type="text" id="identificacion" name="identificacion" class="form-control" required>
                         </div>
-                        <div class="form-group">
-                            <label for="cargo">Cargo:</label>
+                        <div class="mb-3">
+                            <label for="cargo" class="form-label">Cargo:</label>
                             <input type="text" id="cargo" name="cargo" class="form-control" required>
                         </div>
-                        <div class="form-group">
-                            <label for="telefono">Teléfono:</label>
+                        <div class="mb-3">
+                            <label for="telefono" class="form-label">Teléfono:</label>
                             <input type="text" id="telefono" name="telefono" class="form-control" required>
                         </div>
-                        <div class="form-group">
-                            <label for="correo">Correo:</label>
+                        <div class="mb-3">
+                            <label for="correo" class="form-label">Correo:</label>
                             <input type="email" id="correo" name="correo" class="form-control" required>
                         </div>
-                        <div class="form-group">
-                            <label for="rol">Rol:</label>
+                        <div class="mb-3">
+                            <label for="rol" class="form-label">Rol:</label>
                             <select id="rol" name="rol" class="form-control" required>
                                 <option value="Empleado">Empleado</option>
                                 <option value="Administrador">Administrador</option>
                             </select>
                         </div>
-                        <div class="form-group">
-                            <label for="imagen">Imagen:</label>
+                        <div class="mb-3">
+                            <label for="imagen" class="form-label">Imagen:</label>
                             <input type="file" id="imagen" name="imagen" class="form-control">
                         </div>
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
                         <button type="submit" class="btn btn-primary">Guardar</button>
                     </div>
                 </form>
@@ -165,20 +163,18 @@ $usuarios = $stmt->fetchAll(PDO::FETCH_ASSOC);
     </div>
 
 <!-- Modal de Confirmación -->
-<div class="modal fade" id="confirmDeleteModal" tabindex="-1" role="dialog" aria-labelledby="confirmDeleteModalLabel" aria-hidden="true">
-    <div class="modal-dialog" role="document">
+<div class="modal fade" id="confirmDeleteModal" tabindex="-1" aria-labelledby="confirmDeleteModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="confirmDeleteModalLabel">Confirmar Eliminación</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
                 ¿Estás seguro de que deseas eliminar este usuario?
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
                 <a id="confirmDeleteButton" class="btn btn-danger">Eliminar</a>
             </div>
         </div>
@@ -186,14 +182,12 @@ $usuarios = $stmt->fetchAll(PDO::FETCH_ASSOC);
 </div>
 
 <!-- Modal para mostrar imagen ampliada -->
-<div class="modal fade" id="imageModal" tabindex="-1" role="dialog" aria-labelledby="imageModalLabel" aria-hidden="true">
-    <div class="modal-dialog" role="document">
+<div class="modal fade" id="imageModal" tabindex="-1" aria-labelledby="imageModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="imageModalLabel">Imagen del Usuario</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
                 <img id="modalImage" src="" alt="Imagen ampliada" style="width: 100%; height: auto;">
@@ -203,20 +197,56 @@ $usuarios = $stmt->fetchAll(PDO::FETCH_ASSOC);
 </div>
 
 <script>
-    $('#confirmDeleteModal').on('show.bs.modal', function (event) {
-        var button = $(event.relatedTarget); // Botón que activó el modal
-        var userId = button.data('id'); // Extraer el ID del usuario
-        var deleteUrl = 'eliminar_usuario.php?id=' + userId; // Crear la URL de eliminación
+    document.addEventListener('DOMContentLoaded', function() {
+        // Manejar el modal de nuevo usuario
+        const nuevoUsuarioBtn = document.querySelector('.btn-primary[data-toggle="modal"]');
+        if (nuevoUsuarioBtn) {
+            nuevoUsuarioBtn.setAttribute('data-bs-toggle', 'modal');
+            nuevoUsuarioBtn.setAttribute('data-bs-target', '#nuevoUsuarioModal');
+        }
 
-        // Actualizar el botón de confirmación
-        var modal = $(this);
-        modal.find('#confirmDeleteButton').attr('href', deleteUrl);
-    });
+        // Manejar el modal de imagen
+        document.querySelectorAll('.clickable-image').forEach(img => {
+            img.setAttribute('data-bs-toggle', 'modal');
+            img.setAttribute('data-bs-target', '#imageModal');
+            img.addEventListener('click', function() {
+                const imgSrc = this.getAttribute('data-img-src');
+                document.getElementById('modalImage').setAttribute('src', imgSrc);
+            });
+        });
 
-    $(document).ready(function() {
-        $('.clickable-image').on('click', function() {
-            var imgSrc = $(this).data('img-src');
-            $('#modalImage').attr('src', imgSrc);
+        // Manejar el modal de eliminación
+        document.querySelectorAll('.btn-danger[data-bs-toggle="modal"]').forEach(button => {
+            button.addEventListener('click', function() {
+                const userId = this.getAttribute('data-id');
+                const deleteUrl = 'eliminar_usuario.php?id=' + userId;
+                document.getElementById('confirmDeleteButton').setAttribute('href', deleteUrl);
+            });
+        });
+
+        // Manejar la eliminación con SweetAlert2
+        document.getElementById('confirmDeleteButton').addEventListener('click', function(e) {
+            e.preventDefault();
+            const deleteUrl = this.getAttribute('href');
+            
+            Swal.fire({
+                title: '¿Estás seguro?',
+                text: "Esta acción no se puede deshacer",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#d33',
+                cancelButtonColor: '#3085d6',
+                confirmButtonText: 'Sí, eliminar',
+                cancelButtonText: 'Cancelar'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    window.location.href = deleteUrl;
+                }
+            });
+
+            // Cerrar el modal de confirmación
+            const modal = bootstrap.Modal.getInstance(document.getElementById('confirmDeleteModal'));
+            modal.hide();
         });
     });
 </script>

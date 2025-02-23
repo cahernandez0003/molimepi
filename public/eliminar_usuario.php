@@ -1,17 +1,47 @@
 <?php
 session_start();
+require_once '../config/database.php';
+
+// Verificar si el usuario está autenticado y es administrador
 if (!isset($_SESSION['usuario_id']) || $_SESSION['rol'] !== 'Administrador') {
     header('Location: login.php');
     exit();
 }
 
-require_once '../config/database.php';
+if (!isset($_GET['id'])) {
+    header('Location: empleados.php');
+    exit();
+}
 
 $id = $_GET['id'];
-$stmt = $pdo->prepare("DELETE FROM usuarios WHERE ID = :id");
-$stmt->execute(['id' => $id]);
 
-header('Location: empleados.php'); // Redirigir a la lista de empleados
+try {
+    // Obtener información del usuario antes de eliminar
+    $stmt = $pdo->prepare("SELECT imagen FROM usuarios WHERE ID = :id");
+    $stmt->execute(['id' => $id]);
+    $usuario = $stmt->fetch(PDO::FETCH_ASSOC);
+
+    // Eliminar el usuario
+    $stmt = $pdo->prepare("DELETE FROM usuarios WHERE ID = :id");
+    $stmt->execute(['id' => $id]);
+
+    // Si el usuario tenía una imagen personalizada, eliminarla
+    if ($usuario && $usuario['imagen'] !== 'public/imgs/nofoto.png') {
+        $rutaImagen = str_replace('public/', '', $usuario['imagen']);
+        if (file_exists($rutaImagen)) {
+            unlink($rutaImagen);
+        }
+    }
+
+    $_SESSION['mensaje'] = "Usuario eliminado correctamente";
+    $_SESSION['tipo_mensaje'] = "success";
+} catch (PDOException $e) {
+    error_log("Error al eliminar usuario: " . $e->getMessage());
+    $_SESSION['mensaje'] = "Error al eliminar el usuario";
+    $_SESSION['tipo_mensaje'] = "error";
+}
+
+header('Location: empleados.php');
 exit();
 ?>
 
