@@ -314,3 +314,50 @@ Se solicitó implementar diferentes tipos de registro para los horarios:
 1. Implementar validación de tipos de archivo para imágenes
 2. Agregar compresión de imágenes
 3. Mejorar la gestión de permisos de archivos 
+
+## 2024-03-XX - Mejoras en la Gestión de Horas Extra y Asistencia
+
+### Cambios en el Sistema de Horas Extra
+1. **Aprobación Parcial de Horas Extra**
+   - Se implementó la funcionalidad para aprobar parcialmente las horas extra solicitadas
+   - Se agregó un campo para especificar la cantidad de horas a aprobar
+   - Se actualizó el modal de procesamiento para incluir:
+     - Visualización de horas solicitadas
+     - Campo para horas a aprobar
+     - Selección de estado (Aprobado/Rechazado)
+     - Campo obligatorio para comentarios
+
+2. **Mejoras en la Base de Datos**
+   - Se corrigió la estructura de la tabla `solicitudes_horas_extra`
+   - Se implementó el manejo de estados: Pendiente, Aprobado, Rechazado, Aprobado Parcialmente
+   - Se agregaron campos para tracking de aprobaciones:
+     - `horas_aprobadas`
+     - `aprobado_por`
+     - `aprobado_en`
+
+3. **Procesamiento de Solicitudes**
+   - Se creó el archivo `procesar_horas_extra.php`
+   - Se implementó manejo de transacciones para mantener integridad de datos
+   - Se agregó sistema de notificaciones para informar sobre el estado de las solicitudes
+   - Se corrigió el campo `comentario` en la tabla de notificaciones
+
+### Mejoras en el Sistema de Asistencia
+1. **Control de Edición de Registros**
+   - Se modificó la visualización de registros de asistencia
+   - Se oculta el botón de edición para registros con horas extra ya procesadas
+   - Se muestra una insignia indicando el estado (Aprobado/Rechazado) para registros procesados
+
+2. **Integración con Horas Extra**
+   - Se agregó JOIN con la tabla `solicitudes_horas_extra`
+   - Se implementó lógica para mostrar/ocultar acciones según el estado de la solicitud
+   - Se mejoró la presentación visual con badges de Bootstrap
+
+### Correcciones Técnicas
+1. **Optimización de Consultas SQL**
+   - Se agregaron LEFT JOIN para mantener todos los registros de asistencia
+   - Se mejoró el manejo de fechas en las consultas
+
+2. **Mejoras en la Interfaz de Usuario**
+   - Se implementaron validaciones en JavaScript
+   - Se agregaron mensajes de confirmación y error
+   - Se mejoró la experiencia de usuario en formularios modales 

@@ -41,6 +41,22 @@ MOLIMEPI es un sistema integral de gestión de empleados que permite administrar
 - Validación de tipos de archivo
 - Gestión de permisos de acceso
 
+#### Sistema de Horas Extra
+- Registro y seguimiento de horas extra trabajadas
+- Aprobación total o parcial de horas extra solicitadas
+- Sistema de notificaciones para estados de solicitudes
+- Interfaz intuitiva para gestión de solicitudes
+- Validaciones automáticas de horas y fechas
+- Histórico de solicitudes con estados y comentarios
+
+#### Control de Asistencia
+- Registro de entrada y salida de personal
+- Cálculo automático de horas trabajadas
+- Integración con sistema de horas extra
+- Control de edición basado en estados de solicitudes
+- Visualización clara del estado de registros
+- Interfaz responsiva y amigable
+
 ## Requisitos Técnicos
 
 ### Servidor

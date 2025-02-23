@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 23-02-2025 a las 12:52:24
+-- Tiempo de generación: 23-02-2025 a las 23:05:20
 -- Versión del servidor: 10.4.32-MariaDB
 -- Versión de PHP: 8.2.12
 
@@ -60,33 +60,51 @@ CREATE TABLE `horarios_trabajo` (
 
 INSERT INTO `horarios_trabajo` (`id`, `usuario_id`, `fecha`, `hora_entrada`, `hora_salida`, `creado_en`, `tipo`, `horas_dia`) VALUES
 (2, 19, '2025-02-17', '08:00:00', '14:00:00', '2025-02-17 22:57:27', 'normal', 6),
-(3, 2, '2025-02-18', '09:00:00', '17:00:00', '2025-02-17 23:20:17', 'normal', 8),
-(7, 2, '2025-02-12', '16:00:00', '19:00:00', '2025-02-18 11:44:59', 'normal', 3),
 (12, 23, '2025-02-13', '07:00:00', '16:00:00', '2025-02-18 21:42:16', 'normal', 9),
 (17, 18, '2025-02-19', '07:00:00', '15:00:00', '2025-02-18 23:08:26', 'normal', 8),
 (18, 19, '2025-02-19', '07:00:00', '13:00:00', '2025-02-18 23:08:43', 'normal', 6),
-(19, 2, '2025-02-13', '13:00:00', '15:00:00', '2025-02-18 23:25:33', 'normal', 2),
 (22, 18, '2025-02-11', '07:00:00', '15:00:00', '2025-02-19 00:08:47', 'normal', 8),
 (23, 18, '2025-02-10', '07:00:00', '15:00:00', '2025-02-19 00:13:48', 'normal', 8),
-(24, 2, '2025-02-10', '01:00:00', '02:00:00', '2025-02-19 00:21:00', 'normal', 1),
 (26, 23, '2025-02-11', NULL, NULL, '2025-02-19 00:28:59', 'descanso', 0),
-(27, 2, '2025-02-11', NULL, NULL, '2025-02-19 00:29:28', 'otros', 0),
 (83, 18, '2025-02-21', '07:00:00', '15:00:00', '2025-02-21 20:29:38', 'normal', 8),
 (84, 19, '2025-03-17', '08:00:00', '14:00:00', '2025-02-21 20:32:10', 'normal', 6),
-(85, 2, '2025-03-18', '09:00:00', '17:00:00', '2025-02-21 20:32:10', 'normal', 8),
-(86, 2, '2025-03-12', '16:00:00', '19:00:00', '2025-02-21 20:32:10', 'normal', 3),
 (87, 23, '2025-03-13', '07:00:00', '16:00:00', '2025-02-21 20:32:10', 'normal', 9),
 (88, 18, '2025-03-19', '07:00:00', '15:00:00', '2025-02-21 20:32:10', 'normal', 8),
 (89, 19, '2025-03-19', '07:00:00', '13:00:00', '2025-02-21 20:32:10', 'normal', 6),
-(90, 2, '2025-03-13', NULL, NULL, '2025-02-21 20:32:10', 'descanso', 0),
 (91, 18, '2025-03-12', '13:00:00', '19:00:00', '2025-02-21 20:32:10', 'normal', 6),
 (92, 18, '2025-03-11', '07:00:00', '15:00:00', '2025-02-21 20:32:10', 'normal', 8),
-(94, 2, '2025-03-10', '01:00:00', '02:00:00', '2025-02-21 20:32:10', 'normal', 1),
 (95, 23, '2025-03-11', NULL, NULL, '2025-02-21 20:32:10', 'descanso', 0),
-(96, 2, '2025-03-11', NULL, NULL, '2025-02-21 20:32:10', 'otros', 0),
 (97, 18, '2025-03-21', '08:00:00', '14:00:00', '2025-02-21 20:32:10', 'normal', 6),
 (98, 19, '2025-02-12', NULL, NULL, '2025-02-23 11:36:12', 'descanso', 0),
-(99, 23, '2025-02-12', '01:00:00', '06:00:00', '2025-02-23 11:36:53', 'normal', 5);
+(99, 23, '2025-02-12', '01:00:00', '06:00:00', '2025-02-23 11:36:53', 'normal', 5),
+(100, 22, '2025-02-05', '07:00:00', '12:00:00', '2025-02-23 16:43:38', 'normal', 5),
+(103, 22, '2025-02-10', '09:00:00', '17:00:00', '2025-02-23 19:09:46', 'normal', 8),
+(104, 19, '2025-02-10', NULL, NULL, '2025-02-23 19:10:03', 'descanso', 0),
+(105, 23, '2025-02-10', NULL, NULL, '2025-02-23 19:10:16', 'baja', 0),
+(106, 23, '2025-02-23', '07:00:00', '15:00:00', '2025-02-23 21:03:56', 'normal', 8),
+(107, 23, '2025-02-22', '09:00:00', '14:00:00', '2025-02-23 22:01:49', 'normal', 5);
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `hrex_empleado`
+--
+
+CREATE TABLE `hrex_empleado` (
+  `id` int(11) NOT NULL,
+  `usuario_id` int(11) NOT NULL,
+  `fecha` date NOT NULL,
+  `horas_extra` decimal(5,2) NOT NULL,
+  `fecha_registro` timestamp NOT NULL DEFAULT current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Volcado de datos para la tabla `hrex_empleado`
+--
+
+INSERT INTO `hrex_empleado` (`id`, `usuario_id`, `fecha`, `horas_extra`, `fecha_registro`) VALUES
+(3, 23, '2025-02-23', 1.50, '2025-02-23 21:51:41'),
+(4, 23, '2025-02-22', 1.00, '2025-02-23 22:02:24');
 
 -- --------------------------------------------------------
 
@@ -124,19 +142,10 @@ CREATE TABLE `notificaciones` (
 --
 
 INSERT INTO `notificaciones` (`ID`, `usuario_id`, `tipo`, `referencia_id`, `mensaje`, `comentario`, `leida`, `estado`, `fecha_creacion`) VALUES
-(1, 19, 'solicitud_password', NULL, 'Tu solicitud de restablecimiento de contraseña ha sido aprobada. Tu nueva contraseña temporal es: 123456', NULL, 0, NULL, '2025-02-19 23:54:56'),
-(2, 1, 'solicitud_password', 2, 'El usuario DIEGO RANGEL ha solicitado restablecer su contraseña', NULL, 1, NULL, '2025-02-19 23:58:03'),
-(3, 22, 'solicitud_password', 2, 'El usuario DIEGO RANGEL ha solicitado restablecer su contraseña', NULL, 0, NULL, '2025-02-19 23:58:09'),
-(4, 24, 'solicitud_password', 2, 'El usuario DIEGO RANGEL ha solicitado restablecer su contraseña', NULL, 0, NULL, '2025-02-19 23:58:16'),
-(5, 19, 'solicitud_password', NULL, 'Tu solicitud de restablecimiento de contraseña ha sido rechazada.', NULL, 0, NULL, '2025-02-19 23:58:42'),
-(6, 1, 'solicitud_password', 3, 'El usuario DIEGO RANGEL ha solicitado restablecer su contraseña', NULL, 1, NULL, '2025-02-19 23:59:05'),
-(7, 22, 'solicitud_password', 3, 'El usuario DIEGO RANGEL ha solicitado restablecer su contraseña', NULL, 0, NULL, '2025-02-19 23:59:12'),
-(8, 24, 'solicitud_password', 3, 'El usuario DIEGO RANGEL ha solicitado restablecer su contraseña', NULL, 0, NULL, '2025-02-19 23:59:19'),
-(9, 19, 'solicitud_password', NULL, 'Tu solicitud de restablecimiento de contraseña ha sido aprobada. Tu nueva contraseña temporal es: 123456', NULL, 0, NULL, '2025-02-20 00:01:32'),
-(10, 1, 'solicitud_password', 4, 'El usuario CARLOS ANDRÉS HERNÁNDEZ SIERRA ha solicitado restablecer su contraseña', NULL, 1, NULL, '2025-02-21 20:33:52'),
-(11, 22, 'solicitud_password', 4, 'El usuario CARLOS ANDRÉS HERNÁNDEZ SIERRA ha solicitado restablecer su contraseña', NULL, 0, NULL, '2025-02-21 20:34:00'),
-(12, 24, 'solicitud_password', 4, 'El usuario CARLOS ANDRÉS HERNÁNDEZ SIERRA ha solicitado restablecer su contraseña', NULL, 0, NULL, '2025-02-21 20:34:07'),
-(13, 18, 'solicitud_password', NULL, 'Tu solicitud de restablecimiento de contraseña ha sido aprobada. Tu nueva contraseña temporal es: 123456', NULL, 0, NULL, '2025-02-21 20:34:49');
+(16, 1, 'solicitud_password', 6, 'El usuario anas ha solicitado restablecer su contraseña', 'ok', 1, 'Aprobada', '2025-02-23 18:48:19'),
+(17, 1, 'respuesta_password', NULL, 'Tu solicitud de restablecimiento de contraseña ha sido aprobada. Tu nueva contraseña temporal es: 123456', 'ok', 1, NULL, '2025-02-23 18:48:44'),
+(18, 23, 'horas_extra', NULL, 'Se han aprobado 1.5 horas extra para el día 23/02/2025', 'no se aprueba todo porque salió a rezar', 1, NULL, '2025-02-23 21:51:41'),
+(19, 23, 'horas_extra', NULL, 'Se han aprobado 1 horas extra para el día 22/02/2025', 'aprobado', 0, NULL, '2025-02-23 22:02:24');
 
 -- --------------------------------------------------------
 
@@ -153,6 +162,14 @@ CREATE TABLE `registro_asistencia` (
   `total_horas` decimal(5,2) DEFAULT 0.00,
   `creado_en` timestamp NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Volcado de datos para la tabla `registro_asistencia`
+--
+
+INSERT INTO `registro_asistencia` (`id`, `usuario_id`, `fecha`, `hora_entrada`, `hora_salida`, `total_horas`, `creado_en`) VALUES
+(1, 23, '2025-02-23', '08:00:18', '18:06:52', 10.11, '2025-02-23 19:06:18'),
+(2, 23, '2025-02-22', '08:00:00', '15:00:00', 7.00, '2025-02-23 22:01:14');
 
 -- --------------------------------------------------------
 
@@ -187,6 +204,14 @@ CREATE TABLE `solicitudes_horas_extra` (
   `aprobado_en` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
+--
+-- Volcado de datos para la tabla `solicitudes_horas_extra`
+--
+
+INSERT INTO `solicitudes_horas_extra` (`id`, `usuario_id`, `fecha`, `horas_solicitadas`, `horas_aprobadas`, `estado`, `comentarios`, `aprobado_por`, `aprobado_en`) VALUES
+(3, 23, '2025-02-23', 2.11, 1.50, 'Aprobado', 'no se aprueba todo porque salió a rezar', 1, '2025-02-23 21:51:41'),
+(4, 23, '2025-02-22', 2.00, 1.00, 'Aprobado', 'aprobado', 1, '2025-02-23 22:02:24');
+
 -- --------------------------------------------------------
 
 --
@@ -210,7 +235,8 @@ INSERT INTO `solicitudes_password` (`id`, `usuario_id`, `token`, `estado`, `fech
 (1, 19, 'c1e7237a598279ebbc17273c607915bb', 'Aprobada', '2025-02-19 23:28:03', '2025-02-19 23:54:56'),
 (2, 19, '8d2bd2b583244959abea48f571930d39', 'Rechazada', '2025-02-19 23:58:03', '2025-02-19 23:58:42'),
 (3, 19, 'bd366f63a4f5612b8d99708e35ce4d77', 'Aprobada', '2025-02-19 23:59:05', '2025-02-20 00:01:32'),
-(4, 18, '5b1b3c6d36b954bd47cf206dda36ecb5', 'Aprobada', '2025-02-21 20:33:52', '2025-02-21 20:34:49');
+(4, 18, '5b1b3c6d36b954bd47cf206dda36ecb5', 'Aprobada', '2025-02-21 20:33:52', '2025-02-21 20:34:49'),
+(6, 23, 'cd93f7d95559cb3ea9475527abd00be7', 'Pendiente', '2025-02-23 18:48:19', NULL);
 
 -- --------------------------------------------------------
 
@@ -238,16 +264,11 @@ CREATE TABLE `usuarios` (
 --
 
 INSERT INTO `usuarios` (`ID`, `nombre`, `identificacion`, `cargo`, `telefono`, `correo`, `nickname`, `password`, `rol`, `imagen`, `fecha_registro`, `cambio_password`) VALUES
-(1, 'Admin Ejemplo', '12345678', 'Administrador', '1234567890', 'admin@molimepi.com', '12345678', '$2y$10$/5H3v7XJX/LMSazUX7nBmuPDJHVWgEs/UFs73iJ7xXNeTUgHP..Ay', 'Administrador', 'public/imgs/d7ffed4b9b4aa74281d77c1aad3e2ec5.jpg', '2025-02-13 19:09:25', 1),
-(2, 'Empleado Ejemplo', '87654321', 'Empleado', '0987654321', 'empleado@ejemplo.com', '87654321', '$2y$10$xMskf2AerDH6eVLVheLz1.yPHtuJER524ht/iFFmM/yd84JIBhwJm', 'Empleado', 'public/imgs/nofoto.png', '2025-02-13 19:09:25', 0),
+(1, 'Admin Ejemplo', '12345678', 'Administrador', '1234567890', 'admin@molimepi.com', '12345678', '$2y$10$lAWBnC6l0ce.obFjkkvz0.7u4ttblxCpWb6WTcAPh5G6.8SRchsua', 'Administrador', 'public/imgs/d7ffed4b9b4aa74281d77c1aad3e2ec5.jpg', '2025-02-13 19:09:25', 1),
 (18, 'CARLOS ANDRÉS HERNÁNDEZ SIERRA', '60565839P', 'JEFE OPERACIONES', '687055651', 'poli.70811@gmail.com', '60565839P', '$2y$10$y1YXjeQJI4zzJlE7x77LfuYZ1Ll36qEug4Fhw0RU7Kkoso41zgSNq', 'Empleado', 'public/imgs/transparent-bg-designify.png', '2025-02-16 11:36:18', 1),
 (19, 'DIEGO RANGEL', '5555666333', 'ENCARGADO ALMACEN', '99988879', 'DIEGOR@MIMOUNMARKET.COM', '5555666333', '$2y$10$A/GXx3g53qZnpnHV5NTuMebi9F/7AbkStbiKVZ7wkOB.l0fRWofv.', 'Empleado', 'public/imgs/nofoto.png', '2025-02-16 18:16:27', 0),
-(22, 'Nicolas', 'Mora', 'Presidente Teramoda', '6311884545', 'hasdjkasdshbdas@inventado.com', 'Mora', '$2y$10$13qpQ6aJ5rKWG8OjZDYYa.b8s1uV7YrXqpiiEf8MCuGhOM.wKhnFO', 'Administrador', 'imgs/ZR03TUTTI13.jpg', '2025-02-17 06:19:34', 1),
-(23, 'anas', 'g45699744g', 'MOZO ESPECIALISTA', '555555555', 'anas@mimounmarket.com', 'g45699744g', '$2y$10$p6hC/LmeIXMLk/A9S2xMLOSV7lYcSyAoFCY6.QtoNMXIBjApuUdte', 'Empleado', 'imgs/nofoto.png', '2025-02-18 21:41:42', 0),
-(24, 'Admin Sistema', 'ADMIN001', 'Administrador Sistema', '123456789', 'admin@molimepi.com', 'admin', '.yPHtuJER524ht/iFFmM/yd84JIBhwJm', 'Administrador', 'imgs/nofoto.png', '2025-02-19 23:40:37', 1),
-(25, 'GARI NEVIL', '75103000', 'PRUEBA', '9696969696', 'ANIMAL@PLANET.COM', '75103000', '$2y$10$.CG2fgqeHzUEj7Bq0Jwmju6cbcsuFNeCK2hPhg9kC2aV98WPJUh5O', 'Empleado', 'imgs/nofoto.png', '2025-02-23 11:35:11', 0),
-(27, 'prueba prueba', 'prueba', 'prueba', 'prueba', 'prueba@prueba', 'prueba', '$2y$10$cysnAobQtKewByANtk0K8O12uc3/lYlgOnPUs99JWlHUkU6HvlHb.', 'Empleado', 'public/imgs/0VACA.jpg', '2025-02-23 11:39:23', 0),
-(28, 'kkkk', 'kkkk', 'kkkk', 'kkkk', 'kkk@kkkk', 'kkkk', '$2y$10$jDMuLjSKk/tXrJKH06y94u1J4z2Jl23JBJJPSzQ3yw54sOrecGvJG', 'Empleado', 'imgs/CO06SAMRA01.jpg', '2025-02-23 11:40:28', 0);
+(22, 'Nicolas', 'Mora', 'Presidente Teramoda', '6311884545', 'hasdjkasdshbdas@inventado.com', 'Mora', '$2y$10$13qpQ6aJ5rKWG8OjZDYYa.b8s1uV7YrXqpiiEf8MCuGhOM.wKhnFO', 'Empleado', 'public/imgs/AL01ALIMENTACION32.jpg', '2025-02-17 06:19:34', 1),
+(23, 'anas', 'g45699744g', 'MOZO ESPECIALISTA', '555555555', 'anas@mimounmarket.com', 'g45699744g', '$2y$10$AMUf74l3.0syAEz8VsuolueabsYzOXByfJydCkVogOvoEBcNguLlC', 'Empleado', 'public/imgs/nofoto.png', '2025-02-18 21:41:42', 1);
 
 --
 -- Disparadores `usuarios`
@@ -278,6 +299,13 @@ ALTER TABLE `empleados`
 ALTER TABLE `horarios_trabajo`
   ADD PRIMARY KEY (`id`),
   ADD KEY `usuario_id` (`usuario_id`);
+
+--
+-- Indices de la tabla `hrex_empleado`
+--
+ALTER TABLE `hrex_empleado`
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `unique_usuario_fecha` (`usuario_id`,`fecha`);
 
 --
 -- Indices de la tabla `logs`
@@ -345,7 +373,13 @@ ALTER TABLE `empleados`
 -- AUTO_INCREMENT de la tabla `horarios_trabajo`
 --
 ALTER TABLE `horarios_trabajo`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=100;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=108;
+
+--
+-- AUTO_INCREMENT de la tabla `hrex_empleado`
+--
+ALTER TABLE `hrex_empleado`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT de la tabla `logs`
@@ -357,13 +391,13 @@ ALTER TABLE `logs`
 -- AUTO_INCREMENT de la tabla `notificaciones`
 --
 ALTER TABLE `notificaciones`
-  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
+  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=20;
 
 --
 -- AUTO_INCREMENT de la tabla `registro_asistencia`
 --
 ALTER TABLE `registro_asistencia`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT de la tabla `solicitudes`
@@ -375,19 +409,19 @@ ALTER TABLE `solicitudes`
 -- AUTO_INCREMENT de la tabla `solicitudes_horas_extra`
 --
 ALTER TABLE `solicitudes_horas_extra`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT de la tabla `solicitudes_password`
 --
 ALTER TABLE `solicitudes_password`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- AUTO_INCREMENT de la tabla `usuarios`
 --
 ALTER TABLE `usuarios`
-  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=29;
+  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=37;
 
 --
 -- Restricciones para tablas volcadas
@@ -404,6 +438,12 @@ ALTER TABLE `empleados`
 --
 ALTER TABLE `horarios_trabajo`
   ADD CONSTRAINT `horarios_trabajo_ibfk_1` FOREIGN KEY (`usuario_id`) REFERENCES `usuarios` (`ID`) ON DELETE CASCADE;
+
+--
+-- Filtros para la tabla `hrex_empleado`
+--
+ALTER TABLE `hrex_empleado`
+  ADD CONSTRAINT `hrex_empleado_ibfk_1` FOREIGN KEY (`usuario_id`) REFERENCES `usuarios` (`ID`);
 
 --
 -- Filtros para la tabla `logs`
