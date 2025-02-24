@@ -13,7 +13,7 @@ ini_set('display_errors', 1);
 
 // Obtener empleados para la selección
 try {
-    $temp = $pdo->query("SELECT ID, nombre FROM usuarios WHERE rol = 'Empleado'");
+    $temp = $pdo->query("SELECT ID, nombre FROM usuarios");
     $empleados = $temp->fetchAll(PDO::FETCH_ASSOC);
 } catch (PDOException $e) {
     die("Error en la consulta de empleados: " . $e->getMessage());
@@ -70,7 +70,7 @@ try {
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title" id="modalAgregarHorarioLabel">Agregar Horario</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">x</button>
                 </div>
                 <div class="modal-body">
                     <form id="formHorario" action="guardar_horario.php" method="POST">
@@ -124,7 +124,7 @@ try {
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title" id="modalCopiarHorariosLabel">Copiar Horarios de Mes</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">x</button>
                 </div>
                 <div class="modal-body">
                     <form id="formCopiarHorarios" action="copiar_horarios.php" method="POST">

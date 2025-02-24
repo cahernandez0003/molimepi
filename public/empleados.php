@@ -117,7 +117,7 @@ $usuarios = $stmt->fetchAll(PDO::FETCH_ASSOC);
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title" id="nuevoUsuarioModalLabel">Nuevo Usuario</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">x</button>
                 </div>
                 <form method="post" enctype="multipart/form-data">
                     <div class="modal-body">

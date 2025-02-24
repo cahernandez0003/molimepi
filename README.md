@@ -57,6 +57,13 @@ MOLIMEPI es un sistema integral de gestión de empleados que permite administrar
 - Visualización clara del estado de registros
 - Interfaz responsiva y amigable
 
+### Gestión de Vacaciones
+- Control y seguimiento de solicitudes de vacaciones
+- Límite automático de 31 días de vacaciones por año por empleado
+- Registro de aprobaciones con trazabilidad del aprobador
+- Validaciones automáticas para prevenir solapamientos y excesos
+- Interfaz intuitiva para la gestión de solicitudes y aprobaciones
+
 ## Requisitos Técnicos
 
 ### Servidor

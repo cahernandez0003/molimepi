@@ -35,6 +35,9 @@ $imagenPerfil = (!empty($usuario['imagen']) && file_exists("../" . $usuario['ima
                         <a class="nav-link" href="horarios.php"><i class="fas fa-clock"></i> Horarios</a>
                     </li>
                     <li class="nav-item">
+                        <a class="nav-link" href="hrs_extras.php"><i class="fas fa-clock"></i> Horas Extra</a>
+                    </li>
+                    <li class="nav-item">
                         <a class="nav-link" href="exportar.php"><i class="fas fa-file-export"></i> Exportar</a>
                     </li>
                 <?php endif; ?>
@@ -42,10 +45,7 @@ $imagenPerfil = (!empty($usuario['imagen']) && file_exists("../" . $usuario['ima
                     <a class="nav-link" href="asistencia.php"><i class="fas fa-clipboard-check"></i> Asistencia</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="hrs_extras.php"><i class="fas fa-clock"></i> Horas Extra</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="solicitudes.php"><i class="fas fa-envelope"></i> Solicitudes</a>
+                    <a class="nav-link" href="vacaciones.php"><i class="fas fa-umbrella-beach"></i> Vacaciones</a>
                 </li>
             </ul>
             <ul class="navbar-nav ms-auto">

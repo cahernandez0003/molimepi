@@ -2,8 +2,8 @@
 require_once '../config/database.php';
 require_once 'includes/auth.php';
 
-verificarAcceso();
-$es_admin = esAdmin();
+verificarAccesoAdmin();
+$es_admin = true;
 $usuario_id = obtenerIdUsuario();
 
 // Consulta para obtener las horas extra
@@ -39,21 +39,11 @@ $sql = "SELECT
             SELECT 1 FROM hrex_empleado he 
             WHERE he.usuario_id = ra.usuario_id 
             AND DATE(he.fecha) = DATE(ra.fecha)
-        )";
-
-// Si es empleado, solo ver sus propias horas extra
-if (!$es_admin) {
-    $sql .= " AND ra.usuario_id = :usuario_id";
-}
-
-$sql .= " ORDER BY ra.fecha DESC";
+        )
+        ORDER BY ra.fecha DESC";
 
 $stmt = $pdo->prepare($sql);
-if (!$es_admin) {
-    $stmt->execute(['usuario_id' => $usuario_id]);
-} else {
-    $stmt->execute();
-}
+$stmt->execute();
 $registros = $stmt->fetchAll(PDO::FETCH_ASSOC);
 ?>
 
@@ -73,27 +63,21 @@ $registros = $stmt->fetchAll(PDO::FETCH_ASSOC);
                         <thead>
                             <tr>
                                 <th>Fecha</th>
-                                <?php if ($es_admin): ?>
-                                    <th>Empleado</th>
-                                    <th>Identificación</th>
-                                <?php endif; ?>
+                                <th>Empleado</th>
+                                <th>Identificación</th>
                                 <th>Horas Programadas</th>
                                 <th>Horas Registradas</th>
                                 <th>Horas Extra</th>
                                 <th>Estado</th>
-                                <?php if ($es_admin): ?>
-                                    <th>Acciones</th>
-                                <?php endif; ?>
+                                <th>Acciones</th>
                             </tr>
                         </thead>
                         <tbody>
                             <?php foreach ($registros as $registro): ?>
                                 <tr>
                                     <td><?php echo date('d/m/Y', strtotime($registro['fecha'])); ?></td>
-                                    <?php if ($es_admin): ?>
-                                        <td><?php echo htmlspecialchars($registro['nombre']); ?></td>
-                                        <td><?php echo htmlspecialchars($registro['identificacion']); ?></td>
-                                    <?php endif; ?>
+                                    <td><?php echo htmlspecialchars($registro['nombre']); ?></td>
+                                    <td><?php echo htmlspecialchars($registro['identificacion']); ?></td>
                                     <td><?php echo number_format($registro['horas_programadas'], 2); ?></td>
                                     <td><?php echo number_format($registro['horas_registradas'], 2); ?></td>
                                     <td>
@@ -117,20 +101,22 @@ $registros = $stmt->fetchAll(PDO::FETCH_ASSOC);
                                             <?php echo $registro['estado']; ?>
                                         </span>
                                     </td>
-                                    <?php if ($es_admin && $registro['estado'] === 'Pendiente'): ?>
-                                        <td>
-                                            <button class="btn btn-success btn-sm" onclick="procesarHorasExtra(<?php 
-                                                echo htmlspecialchars(json_encode([
-                                                    'registro_id' => $registro['registro_id'],
-                                                    'empleado_id' => $registro['empleado_id'],
-                                                    'fecha' => $registro['fecha'],
-                                                    'horas_solicitadas' => $registro['horas_solicitadas']
-                                                ])); 
-                                            ?>)">
-                                                <i class="fas fa-check"></i> Procesar
-                                            </button>
-                                        </td>
+                                    <td>
+                                    <?php if ($registro['estado'] === 'Pendiente'): ?>
+                                        <button class="btn btn-success btn-sm" onclick="procesarHorasExtra(<?php 
+                                            echo htmlspecialchars(json_encode([
+                                                'registro_id' => $registro['registro_id'],
+                                                'empleado_id' => $registro['empleado_id'],
+                                                'fecha' => $registro['fecha'],
+                                                'horas_solicitadas' => $registro['horas_solicitadas']
+                                            ])); 
+                                        ?>)">
+                                            <i class="fas fa-check"></i> Procesar
+                                        </button>
+                                    <?php else: ?>
+                                        <span class="text-muted">-</span>
                                     <?php endif; ?>
+                                    </td>
                                 </tr>
                             <?php endforeach; ?>
                         </tbody>
