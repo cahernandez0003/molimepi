@@ -18,28 +18,28 @@ $imagenPerfil = (!empty($usuario['imagen']) && file_exists("../" . $usuario['ima
 
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
     <div class="container-fluid">
-        <a class="navbar-brand" href="dashboard.php">MOLIMEPI</a>
+        <a class="navbar-brand" href="<?php echo $es_admin ? 'dashboard.php' : 'index.php'; ?>">MOLIMEPI</a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                <?php if ($es_admin): ?>
                 <li class="nav-item">
                     <a class="nav-link" href="dashboard.php"><i class="fas fa-home"></i> Inicio</a>
                 </li>
-                <?php if ($es_admin): ?>
-                    <li class="nav-item">
-                        <a class="nav-link" href="empleados.php"><i class="fas fa-users"></i> Empleados</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="horarios.php"><i class="fas fa-clock"></i> Horarios</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="hrs_extras.php"><i class="fas fa-clock"></i> Horas Extra</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="exportar.php"><i class="fas fa-file-export"></i> Exportar</a>
-                    </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="empleados.php"><i class="fas fa-users"></i> Empleados</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="horarios.php"><i class="fas fa-clock"></i> Horarios</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="hrs_extras.php"><i class="fas fa-clock"></i> Horas Extra</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="exportar.php"><i class="fas fa-file-export"></i> Exportar</a>
+                </li>
                 <?php endif; ?>
                 <li class="nav-item">
                     <a class="nav-link" href="asistencia.php"><i class="fas fa-clipboard-check"></i> Asistencia</a>

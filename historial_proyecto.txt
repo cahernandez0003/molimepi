@@ -2,7 +2,7 @@
 HISTORIAL DEL PROYECTO MOLIMEPI
 ==========================================================================
 
-ÚLTIMA ACTUALIZACIÓN: 17/03/2024
+ÚLTIMA ACTUALIZACIÓN: 22/03/2024
 AUTOR: Asistente IA
 ==========================================================================
 
@@ -20,6 +20,26 @@ Tabla: horarios_trabajo
 
 CAMBIOS Y MEJORAS IMPLEMENTADAS
 ------------------------------------------
+
+[22/03/2024] Mejora en Navegación para Empleados
+- Eliminación del enlace "Inicio" en la barra de navegación para usuarios con rol de Empleado
+- Redirección del logo MOLIMEPI a diferentes páginas según el rol del usuario
+- Reorganización de elementos de navegación para mejorar la experiencia de usuario
+- Prevención de intentos de acceso al dashboard por parte de empleados
+
+[22/03/2024] Mejora en Control de Acceso
+- Restricción del acceso al dashboard solo para usuarios con rol Administrador
+- Creación de página de acceso denegado con mensaje informativo
+- Redirección automática para usuarios sin permisos suficientes
+- Mejora en la seguridad general del sistema
+
+[22/03/2024] Mejoras en Dashboard y Exportación a Excel
+- Corrección de visualización de imágenes de usuario en el dashboard
+- Implementación de exportación a Excel sin librerías externas
+- Visualización detallada de horarios, vacaciones y horas extra por usuario
+- Cálculo automático de totales de horas y días
+- Mejora en la experiencia de usuario con modales interactivos
+- Compatibilidad con diferentes versiones de Bootstrap
 
 [17/03/2024] Gestión de Tipos de Horarios
 - Implementación de diferentes tipos de registro (normal, descanso, baja, otros)
@@ -64,6 +84,17 @@ VALIDACIONES IMPLEMENTADAS
    - Verificación de rangos de hora válidos
    - Control de duplicidad de registros
 
+4. Visualización de Imágenes
+   - Manejo de diferentes formatos de rutas (imgs/, public/imgs/)
+   - Detección automática del formato de ruta
+   - Visualización de imagen por defecto cuando no existe
+
+5. Control de Acceso
+   - Verificación de roles de usuario
+   - Restricción de acceso basada en permisos
+   - Redirección a página informativa en caso de acceso denegado
+   - Mensajes claros sobre los motivos de restricción
+
 RECOMENDACIONES DE USO
 ------------------------------------------
 1. Horarios Normales
@@ -81,6 +112,16 @@ RECOMENDACIONES DE USO
    - Comprobar que los días sean válidos
    - Revisar los horarios copiados
 
+4. Exportación a Excel
+   - Seleccionar el mes y año deseado antes de exportar
+   - El archivo generado incluye información detallada por usuario
+   - Compatible con todas las versiones de Excel
+
+5. Gestión de Permisos
+   - Solo los administradores pueden acceder al dashboard
+   - Los empleados deben usar las vistas específicas para su rol
+   - Contactar al administrador si se requieren permisos adicionales
+
 PRÓXIMAS MEJORAS PLANIFICADAS
 ------------------------------------------
 1. Visualización
@@ -91,7 +132,7 @@ PRÓXIMAS MEJORAS PLANIFICADAS
 2. Funcionalidades
    - Reportes por tipo de registro
    - Estadísticas de horas trabajadas
-   - Exportación de datos
+   - Exportación de datos a PDF
 
 3. Optimizaciones
    - Mejora en el rendimiento de consultas

@@ -1,5 +1,106 @@
 # BITÁCORA DE DESARROLLO - MOLIMEPI
 
+## 22/03/2024 - Mejora en Navegación para Empleados
+
+### Problema Detectado
+El enlace de "Inicio" en la barra de navegación dirigía a todos los usuarios al dashboard, incluso a aquellos con rol de Empleado, quienes no tienen permiso para acceder a esta página.
+
+### Solución Implementada
+- Modificación del navbar para ocultar el enlace de "Inicio" (dashboard.php) para usuarios con rol de Empleado
+- Actualización del enlace del logo MOLIMEPI para que dirija a diferentes páginas según el rol:
+  * Administradores: dashboard.php
+  * Empleados: index.php
+- Reorganización de los elementos de navegación para mejorar la experiencia de usuario
+
+### Impacto
+- Navegación más intuitiva para los empleados
+- Prevención de intentos de acceso al dashboard por parte de empleados
+- Experiencia de usuario más coherente con los permisos asignados
+- Reducción de posibles errores de redirección
+
+### Archivos Modificados
+- `public/navbar.php`: Modificación de la estructura de navegación basada en roles
+
+### Próximos Pasos
+- Evaluar la creación de una página de inicio específica para empleados
+- Considerar la implementación de un menú de navegación personalizado por rol
+- Mejorar la retroalimentación visual de la navegación actual
+
+## 22/03/2024 - Mejora en Control de Acceso
+
+### Problema Detectado
+El dashboard era accesible para todos los usuarios, incluyendo aquellos con rol de Empleado, lo que representaba un riesgo de seguridad y acceso a información sensible.
+
+### Solución Implementada
+1. Restricción de Acceso:
+   - Modificación de `dashboard.php` para verificar el rol del usuario
+   - Implementación de redirección automática para usuarios sin permisos
+   - Acceso exclusivo para usuarios con rol de Administrador
+
+2. Página de Acceso Denegado:
+   - Creación de `acceso_denegado.php` con mensaje informativo
+   - Diseño amigable con iconos y explicación clara
+   - Botón para regresar a la página de inicio
+   - Instrucciones sobre cómo solicitar acceso si es necesario
+
+### Impacto
+- Mayor seguridad en el sistema
+- Mejor control sobre quién puede ver información sensible
+- Experiencia de usuario mejorada con mensajes claros
+- Prevención de acceso no autorizado a datos de otros empleados
+
+### Archivos Modificados
+- `public/dashboard.php`: Adición de verificación de rol
+- Nuevo: `public/acceso_denegado.php`: Página informativa para acceso denegado
+
+### Próximos Pasos
+1. Implementar niveles de permisos más granulares
+2. Agregar registro (log) de intentos de acceso no autorizados
+3. Mejorar la gestión de roles en el sistema
+
+## 22/03/2024 - Mejoras en Dashboard y Exportación a Excel
+
+### Problemas Detectados
+1. El modal de detalles de usuario no se abría para todos los usuarios
+2. Las imágenes de usuario no se mostraban correctamente en el dashboard
+3. No existía funcionalidad para exportar datos a Excel sin usar librerías externas
+
+### Soluciones Implementadas
+1. Correcciones en el Modal de Detalles:
+   - Actualización de selectores para compatibilidad con Bootstrap 4 y 5
+   - Mejora en el manejo de eventos para cerrar el modal
+   - Limpieza previa del contenido para evitar datos antiguos
+   - Visualización inmediata del modal con indicador de carga
+
+2. Mejoras en la Visualización de Imágenes:
+   - Implementación de lógica robusta para manejar diferentes formatos de rutas
+   - Detección automática de prefijos (`imgs/`, `public/imgs/`)
+   - Manejo consistente de imágenes por defecto
+   - Corrección de rutas en el modal de detalles
+
+3. Implementación de Exportación a Excel:
+   - Creación de `exportar_excel.php` sin dependencias externas
+   - Generación de archivo Excel compatible con todas las versiones
+   - Estructura organizada con hojas para cada usuario
+   - Cálculo automático de totales de horas y días
+   - Diseño profesional con estilos y formato adecuado
+
+### Impacto
+- Mejor experiencia de usuario en la visualización de detalles
+- Visualización correcta de imágenes en toda la aplicación
+- Nueva funcionalidad de exportación de datos sin necesidad de librerías adicionales
+- Compatibilidad mejorada con diferentes versiones de Bootstrap
+
+### Archivos Modificados
+- `public/dashboard.php`: Correcciones en modal y visualización de imágenes
+- `public/obtener_detalles_usuario.php`: Mejora en el manejo de rutas de imágenes
+- Nuevo: `public/exportar_excel.php`: Implementación de exportación a Excel
+
+### Próximos Pasos
+1. Implementar exportación a PDF
+2. Mejorar filtros de búsqueda en el dashboard
+3. Agregar más opciones de personalización en los reportes
+
 ## 17/03/2024 - Implementación de Tipos de Horario
 
 ### Petición del Usuario

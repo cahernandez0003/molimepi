@@ -13,6 +13,15 @@ MOLIMEPI es un sistema integral de gestión de empleados que permite administrar
 - Validaciones de seguridad en contraseñas
 - Manejo seguro de imágenes de perfil
 - Eliminación segura de usuarios y archivos asociados
+- Visualización detallada de información de empleados en dashboard
+
+### Control de Acceso
+- Restricción de acceso basada en roles de usuario
+- Dashboard exclusivo para administradores
+- Página informativa de acceso denegado
+- Redirección automática para usuarios sin permisos
+- Mensajes claros sobre los motivos de restricción
+- Seguridad mejorada para información sensible
 
 ### Gestión de Horarios
 - Registro de horarios de trabajo
@@ -20,6 +29,8 @@ MOLIMEPI es un sistema integral de gestión de empleados que permite administrar
 - Copia de horarios entre meses
 - Prevención de superposición de horarios
 - Visualización en calendario
+- Cálculo automático de horas trabajadas
+- Exportación de datos a Excel sin librerías externas
 
 ### Sistema de Notificaciones
 - Notificaciones en tiempo real
@@ -48,6 +59,7 @@ MOLIMEPI es un sistema integral de gestión de empleados que permite administrar
 - Interfaz intuitiva para gestión de solicitudes
 - Validaciones automáticas de horas y fechas
 - Histórico de solicitudes con estados y comentarios
+- Visualización detallada en dashboard de usuario
 
 #### Control de Asistencia
 - Registro de entrada y salida de personal
@@ -63,6 +75,15 @@ MOLIMEPI es un sistema integral de gestión de empleados que permite administrar
 - Registro de aprobaciones con trazabilidad del aprobador
 - Validaciones automáticas para prevenir solapamientos y excesos
 - Interfaz intuitiva para la gestión de solicitudes y aprobaciones
+- Visualización de períodos de vacaciones en dashboard
+
+### Exportación de Datos
+- Exportación a Excel sin necesidad de librerías externas
+- Reportes detallados por usuario
+- Información de horarios, vacaciones y horas extra
+- Cálculo automático de totales
+- Diseño profesional con estilos y formato adecuado
+- Compatibilidad con todas las versiones de Excel
 
 ## Requisitos Técnicos
 
@@ -131,6 +152,8 @@ molimepi/
 - `registro_asistencia`: Control de asistencia diaria
 - `solicitudes_password`: Gestión de solicitudes de cambio de contraseña
 - `notificaciones`: Sistema de notificaciones internas
+- `vacaciones`: Gestión de solicitudes y períodos de vacaciones
+- `hrex_empleado`: Registro de horas extra trabajadas
 
 ### Estructura de Tablas Clave
 
@@ -189,7 +212,3 @@ Este proyecto está bajo la licencia [TIPO_DE_LICENCIA].
 
 ### Convenciones de Código
 - Rutas de imágenes: `public/imgs/nombre_imagen.jpg`
-- Imagen por defecto: `public/imgs/nofoto.png`
-- Validaciones del lado del cliente y servidor
-- Mensajes de error y éxito consistentes
-- Modales de confirmación para acciones críticas

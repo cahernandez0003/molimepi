@@ -6,6 +6,13 @@ require_once 'navbar.php';
 
 verificarAcceso();
 
+// Verificar si el usuario tiene rol de Administrador
+if ($_SESSION['rol'] !== 'Administrador') {
+    // Redirigir a una página de acceso denegado o al inicio
+    header('Location: acceso_denegado.php');
+    exit();
+}
+
 // Obtener el mes seleccionado (por defecto el mes actual)
 $mes_seleccionado = isset($_GET['mes']) ? $_GET['mes'] : date('m');
 $anio_seleccionado = isset($_GET['anio']) ? $_GET['anio'] : date('Y');
