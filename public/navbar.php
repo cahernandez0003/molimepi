@@ -19,7 +19,7 @@ $imagenPerfil = (!empty($usuario['imagen']) && file_exists("../" . $usuario['ima
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
     <div class="container-fluid">
         <a class="navbar-brand" href="<?php echo $es_admin ? 'dashboard.php' : 'index.php'; ?>">MOLIMEPI</a>
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse" id="navbarNav">
@@ -48,14 +48,14 @@ $imagenPerfil = (!empty($usuario['imagen']) && file_exists("../" . $usuario['ima
                     <a class="nav-link" href="vacaciones.php"><i class="fas fa-umbrella-beach"></i> Vacaciones</a>
                 </li>
             </ul>
-            <ul class="navbar-nav ms-auto">
+            <ul class="navbar-nav ml-auto">
                 <!-- Notificaciones -->
                 <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle position-relative" href="#" id="notificacionesDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                    <a class="nav-link dropdown-toggle position-relative" href="#" id="notificacionesDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                         <i class="fas fa-bell"></i>
-                        <span id="contador-notificaciones" class="badge bg-danger rounded-pill position-absolute" style="top: 0; right: 0; display: none;">0</span>
+                        <span id="contador-notificaciones" class="badge badge-danger rounded-pill position-absolute" style="top: 0; right: 0; display: none;">0</span>
                     </a>
-                    <div class="dropdown-menu dropdown-menu-end" aria-labelledby="notificacionesDropdown">
+                    <div class="dropdown-menu dropdown-menu-right" aria-labelledby="notificacionesDropdown">
                         <div class="dropdown-header">Notificaciones</div>
                         <div id="notificacionesLista">
                             <!-- Las notificaciones se cargarán aquí -->
@@ -68,11 +68,11 @@ $imagenPerfil = (!empty($usuario['imagen']) && file_exists("../" . $usuario['ima
                 </li>
                 <!-- Información del Usuario -->
                 <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle d-flex align-items-center" href="#" id="userDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                    <a class="nav-link dropdown-toggle d-flex align-items-center" href="#" id="userDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                         <img src="<?php echo $imagenPerfil; ?>" class="rounded-circle" style="width: 40px; height: 40px; margin-right: 10px;">
                         <span><?php echo htmlspecialchars($usuario['nombre']); ?></span>
                     </a>
-                    <div class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">
+                    <div class="dropdown-menu dropdown-menu-right" aria-labelledby="userDropdown">
                         <a class="dropdown-item" href="perfil.php"><i class="fas fa-user"></i> Mi Perfil</a>
                         <?php if (!$es_admin): ?>
                             <a class="dropdown-item" href="mi_horario.php"><i class="fas fa-calendar"></i> Mi Horario</a>
@@ -87,12 +87,6 @@ $imagenPerfil = (!empty($usuario['imagen']) && file_exists("../" . $usuario['ima
 </nav>
 
 <div style="margin-top: 80px;"><!-- Espacio para compensar el navbar fijo --></div>
-
-<!-- Scripts necesarios -->
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
 <!-- Script de notificaciones con ruta absoluta -->
 <script>
